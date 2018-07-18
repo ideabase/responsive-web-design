@@ -1,5 +1,23 @@
 <footer role="contentinfo" class="global-footer">
-    {{footer.email}}
-    {{footer.phoneNumber}}
-    {{footer.copyright}}
+
+    <h2>About RWD</h2>
+    <p>Lorem lkjlsdf lkjf aflkj asflskj as;lk fjasflk jal kjaslfkj</p>
+
+    <h3>RWD At Kent State</h3>
+    <p>Lorem lkjasdf;lkj l;kjaf lkajfd ljkaf lkjsaf l;kj</p>
+
+    <h3>About The Instructor: </h3>
+    <p>lorem ;lkjsf l;kjfa ljkaflj af lkajfaslk sf ljkaf lkj</p>
+
+    <p>==================================</p>
+    <p>College of Communication & Information</p>
+    <p>IdeaBase: Powered by Kent State Students</p>
+    <p>Instructor: </p>
+
+    <p>Follow @RWDkent on Twitter</p>
+    <p>View this Site on Github</p>
+
+    {% for image in footer.footerImage %}
+        <img src="{{ image.url }}">
+    {% endfor%}
 </footer>
