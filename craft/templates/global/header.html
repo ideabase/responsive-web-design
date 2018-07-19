@@ -1,17 +1,11 @@
-{% cache globally %}
 <header role="banner">
-	<a id="skip-to-content" href="#content">skip to main content</a>
-	<a href="{{ siteUrl }}">
-		{% for image in header.headerLogo %}
-    	<img src="{{ image.getUrl }}" alt="{{ image.title }}">
-    {% endfor %}
-	</a>
 
-	{% endcache %}
-	{% cache globally %}
+	<br>
+	<br>
+	<br>
+	<h1><a href="{{ siteUrl }}"> RWD </a></h1>
+	
 	<nav role="navigation">
-		<br>
-		<br>
 		<br>
 				<ul>
 					<li>
@@ -25,5 +19,5 @@
 					</li>
       	</ul>
 	</nav>
-	{% endcache %}
+
 </header>

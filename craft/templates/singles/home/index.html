@@ -1,1 +1,12 @@
 {% extends "_layout" %}
+
+{% block content %}
+    {{ entry.subheadline }}
+    {{ entry.body }}
+
+    {% for link in entry.relatedLinksAndDownloads %}
+        {% if link.type == 'internalLink' %}
+            <a href="{{ link.internalUrl }}"> {{ link.linkName }} </a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

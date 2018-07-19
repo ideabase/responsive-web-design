@@ -1,1 +1,20 @@
 {% extends "_layout" %}
+
+
+{% block content %}
+
+    <h1> {{ entry.subheadline }} </h1>
+
+    <ul>
+        {% for block in entry.relatedLinksAndDownloads %}
+            {% if block.linkName == 'Syllabus' %}
+                <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% elseif block.linkName == 'Basic Class Calendar' %}
+                <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+
+
+{% endblock %}
