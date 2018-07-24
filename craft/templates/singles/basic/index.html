@@ -9,7 +9,11 @@
         {% for block in entry.relatedLinksAndDownloads %}
             {% if block.linkName == 'Syllabus' %}
                 <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
-            {% elseif block.linkName == 'Basic Class Calendar' %}
+            {% elseif block.linkName == 'Calendar' %}
+                <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% elseif block.linkName == 'Assignments' %}
+                <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% elseif block.linkName == 'Groups' %}
                 <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
             {% endif %}
         {% endfor %}
