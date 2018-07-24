@@ -1,1 +1,33 @@
 {% extends "_layout" %}
+
+{% block content %}
+
+<h1> {{ entry.subheadline }} </h1>
+
+<ul>
+    {% for block in entry.relatedLinksAndDownloads %}
+        {% if block.linkName == 'Syllabus' %}
+            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+        {% elseif block.linkName == 'Calendar' %}
+            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+        {% elseif block.linkName == 'Assignments' %}
+            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+        {% elseif block.linkName == 'Groups' %}
+            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+
+<h3>Course Tools</h3>
+
+<h3>Registration Details</h3>
+
+<h3>Course Software</h3>
+
+<h3>About The Course</h3>
+
+<h3>Documentation</h3>
+
+
+{% endblock %}
