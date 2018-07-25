@@ -4,30 +4,91 @@
 
 <h1> {{ entry.subheadline }} </h1>
 
-<ul>
-    {% for block in entry.relatedLinksAndDownloads %}
-        {% if block.linkName == 'Syllabus' %}
-            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
-        {% elseif block.linkName == 'Calendar' %}
-            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
-        {% elseif block.linkName == 'Assignments' %}
-            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
-        {% elseif block.linkName == 'Groups' %}
-            <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
-        {% endif %}
-    {% endfor %}
-</ul>
-
-
-<h3>Course Tools</h3>
-
-<h3>Registration Details</h3>
-
-<h3>Course Software</h3>
-
-<h3>About The Course</h3>
-
-<h3>Documentation</h3>
-
+<section>
+		<h2>Course Materials</h2>
+		<div class="gallery-container gallery-container__advanced">
+			<dl class="gallery carousel">
+        <ul>
+          {% for block in entry.relatedLinksAndDownloads %}
+            {% if block.linkName == 'Syllabus' %}
+              <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% elseif block.linkName == 'Calendar' %}
+              <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% elseif block.linkName == 'Assignments' %}
+              <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% elseif block.linkName == 'Groups' %}
+              <li><a href="{{ block.internalUrl }}"> {{ block.linkName }}</a></li>
+            {% endif %}
+          {% endfor %}
+      </ul>
+			</dl>
+		</div>
+	</section>
+	<section class="main-content-area main-content-area__columns-container">
+		<section class="main-content-area__columns">
+		<h2>Course Tools</h2>
+		<p>We'll be using the following tools to complete the project.</p>
+		<h4><a href="http://github.com/ideabase/khs">GitHub Repository</a></h4>
+		<p class="item-summary">This is the central codebase for the website.
+		<h4><a href="https://trello.com/b/7GlYO2lF/kent-historical-society-advanced-responsive-design-2018">Trello (Scrum Board)</a></h4>
+		<p class="item-summary">Used to organize project sprints and backlogs (todo's).</p>
+		<h4><a href="https://basecamp.com/1762189/projects/14815560">Basecamp</a></h4>
+		<p class="item-summary">Used to handle client communication and project-related files.</p>
+		<h4><a href="https://rwdkent.slack.com">Slack</a></h4>
+		<p class="item-summary">Used for real-time communication/chat between team members.</p>
+	</section>
+		<section class="main-content-area__columns">
+		<h2>Course Software</h2>
+		<p>We'll be using the following software in the course.  See the instructor for any software that requires a license key.</p>
+		<ul>
+			<li><a href="https://www.git-tower.com">Tower</a></li>
+			<li><a href="http://sketchapp.com">Sketch</a></li>
+			<li><a href="http://atom.io">Atom</a></li>
+			<li><a href="https://www.mamp.info/en/mamp-pro/">MAMP Pro</a></li>
+			<li><a href="http://www.slack.com">Slack</a></li>
+		</ul>
+	</section>
+	<section class="main-content-area__columns">
+		<h2>Documentation</h2>
+		<p>Instructions on how to perform key technical tasks in the course.</p>
+		<ul>
+			<li><a href="docs/tower.html">1 - Tower + GitHub</a></li>
+			<li><a href="docs/craft.html">2 - MAMP Pro + Craft CMS Setup</a></li>
+			<li><a href="docs/grunt.html">3 - Grunt + SASS</a></li>
+			<li><a href="docs/craft2.html">4 - Craft CMS Templating</a></li>
+			<li><a href="docs/craft3.html">5 - Updating Your Database</a></li>
+		</ul>
+	</section>
+	<br/>
+	</section>
+	<aside role="complementary">
+		<section class="basic-information">
+		<h2>Registration Details</h2>
+			<dl class="detail-listing group">
+				<dt>Instructor:</dt>
+				<dd>Christopher Hallahan</dd>
+				<dt>Terms:</dt>
+				<dd>Spring 2018</dd>
+				<dt>Undergrad:</dt>
+				<dd>CCI 40095-002 - 20826</dd>
+				<dt>Grad:</dt>
+				<dd>CCI 50095-002 - 20827</dd>
+				<dt>Day/Time:</dt>
+				<dd>Tuesdays, 3:45 - 5:00 p.m. and Thursdays, 3:00 - 5:00 p.m.</dd>
+				<dt>Room:</dt>
+				<dd><a href="http://www.ideabasekent.com/directions">IdeaBase</a>, Downtown Kent</dd>
+				<dt>Prereqs:</dt>
+				<dd>Instructor Permission Required</dd>
+			</dl>
+		</section>
+		<section class="about-course">
+				<h2>About the Course</h2>
+				<p>Advanced Responsive Web Design takes the key principles covered in the basic Responsive Web Design course (or equivalent courses) and expands upon them within the framework of a client project through the design and development of website in a content management system (CMS).</p>
+		</section>
+		<!--<section class="about-course">
+				<h2>About the Course</h2>
+				<p>In Kent State University's Responsive Web Design course, you will learn the fundamental principles for developing standards-based web sites from a mobile-first and content-first perspective and ensure its functionality for users in terms of both usability and performance.</p>
+		</section>-->
+	</aside>
 
 {% endblock %}
