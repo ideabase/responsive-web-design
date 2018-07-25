@@ -134,11 +134,7 @@
 <h4>In-Class Assignments/Quizzes</h4>
 
 
-{% assign items = site.assignments | sort: 'date' %}
-{% for item in items %}
-    {% if item.type == 'mini' and item.semester == 'spring-2017' %}<br>
-    {% endif %}
-{% endfor %}
+
     <table>
 <thead>
   <tr><th style="text-align:left;">Assignment</th>
@@ -146,10 +142,10 @@
 </tr></thead>
 <tbody>    <tr>
         <td>
-            <a href="{{ item.url }}">{{ item.title }}</a>
+
         </td>
         <td>
-            {{ item.points }}
+
         </td>
     </tr><tr>
         <td><strong>TOTAL</strong></td>
@@ -164,11 +160,7 @@
 <h4>CodePen Challenges</h4>
 
 
-{% assign items = site.assignments | sort: 'date' %}
-{% for item in items %}
-    {% if item.type == 'challenge' and item.semester == 'spring-2017' %}<br>
-    {% endif %}
-{% endfor %}
+
     <table>
 <thead>
   <tr><th style="text-align:left;">Assignment</th>
@@ -176,10 +168,10 @@
 </tr></thead>
 <tbody>    <tr>
         <td>
-            <a href="{{ item.url }}">{{ item.title }}</a>
+
         </td>
         <td>
-            {{ item.points }}
+
         </td>
     </tr><tr>
         <td><strong>TOTAL</strong></td>
@@ -192,11 +184,7 @@
 <div class="table-float">
 <h4>Semester Project Assignments</h4>
 
-{% assign items = site.assignments | sort: 'date' %}
-{% for item in items %}
-    {% if item.type == 'project' and item.semester == 'spring-2017' %}<br>
-    {% endif %}
-{% endfor %}
+
     <table>
 <thead>
   <tr><th style="text-align:left;">Assignment</th>
@@ -204,10 +192,10 @@
 </tr></thead>
 <tbody>    <tr>
         <td>
-            <a href="{{ item.url }}">{{ item.title }}</a>
+
         </td>
         <td>
-            {{ item.points }}
+
         </td>
     </tr><tr>
         <td><strong>TOTAL</strong></td>
