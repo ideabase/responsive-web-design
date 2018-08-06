@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'yii\\swiftmailer\\' => array($vendorDir . '/yiisoft/yii2-swiftmailer/src'),
     'yii\\queue\\sync\\' => array($vendorDir . '/yiisoft/yii2-queue/src/drivers/sync'),
+    'yii\\queue\\sqs\\' => array($vendorDir . '/yiisoft/yii2-queue/src/drivers/sqs'),
     'yii\\queue\\redis\\' => array($vendorDir . '/yiisoft/yii2-queue/src/drivers/redis'),
     'yii\\queue\\gearman\\' => array($vendorDir . '/yiisoft/yii2-queue/src/drivers/gearman'),
     'yii\\queue\\file\\' => array($vendorDir . '/yiisoft/yii2-queue/src/drivers/file'),
@@ -35,7 +36,9 @@ return array(
     'Zend\\Feed\\' => array($vendorDir . '/zendframework/zend-feed/src'),
     'Zend\\Escaper\\' => array($vendorDir . '/zendframework/zend-escaper/src'),
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
+    'TrueBV\\' => array($vendorDir . '/true/punycode/src'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
     'Symfony\\Component\\Filesystem\\' => array($vendorDir . '/symfony/filesystem'),

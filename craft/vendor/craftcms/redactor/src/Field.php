@@ -167,11 +167,6 @@ class Field extends \craft\base\Field
      */
     public $availableTransforms = '*';
 
-    /**
-     * @var string
-     */
-    private static $_redactorLang = 'en';
-
     // Public Methods
     // =========================================================================
 
@@ -248,7 +243,7 @@ class Field extends \craft\base\Field
         $view = Craft::$app->getView();
         /** @var RedactorAsset $bundle */
         $bundle = $view->getAssetManager()->getBundle(RedactorAsset::class);
-        $redactorLang = $bundle->redactorLang ?? 'en';
+        $redactorLang = $bundle::$redactorLanguage ?? 'en';
 
         // register plugins
         $redactorConfig = $this->_getRedactorConfig();
@@ -277,6 +272,7 @@ class Field extends \craft\base\Field
             $settings['direction'] = $locale->getOrientation();
         }
 
+        RedactorAsset::registerTranslations($view);
         $view->registerJs('new Craft.RedactorInput('.Json::encode($settings).');');
 
         if ($value instanceof FieldData) {
@@ -361,15 +357,34 @@ class Field extends \craft\base\Field
             }
 
             if ($this->cleanupHtml) {
-                // Remove <span> and <font> tags
-                $value = preg_replace('/<(?:span|font)\b[^>]*>/', '', $value);
-                $value = preg_replace('/<\/(?:span|font)>/', '', $value);
+                // Swap no-break whitespaces for regular space
+                $value = preg_replace('/(&nbsp;|&#160;|\x{00A0})/u', ' ', $value);
+                $value = preg_replace('/  +/', ' ', $value);
 
-                // Remove inline styles
-                $value = preg_replace('/(<(?:h1|h2|h3|h4|h5|h6|p|div|blockquote|pre|strong|em|b|i|u|a)\b[^>]*)\s+style="[^"]*"/', '$1', $value);
+                // Remove <font> tags
+                $value = preg_replace('/<(?:\/)?font\b[^>]*>/', '', $value);
+
+                // Remove disallowed inline styles
+                $allowedStyles = $this->_allowedStyles();
+                $value = preg_replace_callback(
+                    '/(<(?:h1|h2|h3|h4|h5|h6|p|div|blockquote|pre|strong|em|b|i|u|a|span)\b[^>]*)\s+style="([^"]*)"/',
+                    function(array $matches) use ($allowedStyles) {
+                        // Only allow certain styles through
+                        $allowed = [];
+                        $styles = explode(';', $matches[2]);
+                        foreach ($styles as $style) {
+                            list($name, $value) = array_map('trim', array_pad(explode(':', $style, 2), 2, ''));
+                            if (isset($allowedStyles[$name])) {
+                                $allowed[] = "{$name}: {$value}";
+                            }
+                        }
+                        return $matches[1].(!empty($allowed) ? ' style="'.implode('; ', $allowed).'"' : '');
+                    },
+                    $value
+                );
 
                 // Remove empty tags
-                $value = preg_replace('/<(h1|h2|h3|h4|h5|h6|p|div|blockquote|pre|strong|em|a|b|i|u)\s*><\/\1>/', '', $value);
+                $value = preg_replace('/<(h1|h2|h3|h4|h5|h6|p|div|blockquote|pre|strong|em|a|b|i|u|span)\s*><\/\1>/', '', $value);
             }
         }
 
@@ -680,5 +695,29 @@ class Field extends \craft\base\Field
             'Attr.AllowedFrameTargets' => ['_blank'],
             'HTML.AllowedComments' => ['pagebreak'],
         ];
+    }
+
+    /**
+     * Returns the allowed inline CSS styles, based on the plugins that are enabled.
+     *
+     * @return string[]
+     */
+    private function _allowedStyles(): array
+    {
+        $styles = [];
+        $plugins = array_flip($this->_getRedactorConfig()['plugins'] ?? []);
+        if (isset($plugins['alignment'])) {
+            $styles['text-align'] = true;
+        }
+        if (isset($plugins['fontcolor'])) {
+            $styles['color'] = true;
+        }
+        if (isset($plugins['fontfamily'])) {
+            $styles['font-family'] = true;
+        }
+        if (isset($plugins['fontsize'])) {
+            $styles['font-size'] = true;
+        }
+        return $styles;
     }
 }
