@@ -1,0 +1,37 @@
+{% extends '_layout_wide' %}
+{% block content %}
+<p class="introduction">You can find the assignments and projects below.</p>
+
+<a href="/class" class="button small">Return to Class</a>
+
+<h2>In-Class Assignments/Quizzes</h2>
+<ul>
+{# {% assign items = site.assignments | sort: 'date' %}
+{% for item in items %}
+	{% if item.type == 'mini' and item.semester == 'fall-2017' %}
+	  {% include assignments.html %}
+	{% endif %}
+{% endfor %} #}
+</ul>
+<hr>
+<h2>CodePen Challenges</h2>
+<ul>
+{% assign items = site.assignments | sort: 'date' %}
+{% for item in items %}
+	{% if item.type == 'challenge' and item.semester == 'fall-2017' %}
+	  {% include assignments.html %}
+	{% endif %}
+{% endfor %}
+</ul>
+<hr>
+<h2>Project Assignments</h2>
+<ul>
+{% assign items = site.assignments | sort: 'date' %}
+{% for item in items %}
+	{% if item.type == 'project' and item.semester == 'fall-2017' %}
+	  {% include assignments.html %}
+	{% endif %}
+{% endfor %}
+</ul>
+<a class="button small" href="/class/assignments/project-summary.html">Semester Project Overview</a>
+{% endblock %}

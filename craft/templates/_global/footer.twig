@@ -1,0 +1,16 @@
+<footer class="group" role="contentinfo">
+	<div class="footer-inner">
+		<div class="footer-contact-information">
+			{{ footer.body }}
+			<p><a class="footer-instructor" href="{{ instructorInformation.instructorInformation.one().emailAddress }}">Instructor: {{ instructorInformation.personName }}</a></p>
+			<div class="footer-supplemental">
+				{% for block in footer.hyperlink.all() %}
+					<a href="{{ block.linkUrl }}">{{ block.linkText }}</a>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="footer-logo">
+			<img src="{{ footer.image.one().asset.one().url }}" alt="{{ footer.image.one().altText }}" />
+		</div>
+	</div>
+</footer>

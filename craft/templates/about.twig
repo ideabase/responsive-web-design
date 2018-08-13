@@ -1,0 +1,59 @@
+{% extends "_layout" %}
+{% block content %}
+<h1>About RWD</h1>
+<section class="main-content-area">
+  {{ entry.body }}
+</section>
+<aside>
+  <section class="instructor-aside">
+    <img src="{{ entry.image.one().asset.one().url }}" alt="{{ entry.image.one().altText }}" />
+    <h3>Instructor Information</h3>
+    <div class="supplemental-information">
+      {# initialize variables to zero #}
+      {% set emailTotal, phoneTotal, emailCount, phoneCount = 0,0,0,0 %}
+
+      {# count total number of email addresses and phone numbers #}
+      {% for block in instructorInformation.instructorInformation.all() %}
+        {% if block.type == "email" %}
+          {% set emailTotal = emailTotal + 1 %}
+        {% elseif block.type == "phone" %}
+          {% set phoneTotal = phoneTotal + 1 %}
+        {% endif %}
+      {% endfor %}
+
+      {# print contact info and number email and phone numbers if there are multiple of each #}
+      {% for block in instructorInformation.instructorInformation.all() %}
+        {% switch block.type %}
+          {% case "email" %}
+            {% set emailCount = emailCount + 1 %}
+            {% if emailTotal < 2 %}
+              <div class="supplemental-information-title">Email</div>
+            {% else %}
+              <div class="supplemental-information-title">Email {{ emailCount }}</div>
+            {% endif %}
+            <div class="supplemental-information-attribute">
+              <a href="mailto:{{ block.emailAddress }}">{{ block.emailAddress }}</a>
+            </div>
+          {% case "phone" %}
+            {% set phoneCount = phoneCount + 1 %}
+            {% if phoneTotal < 2 %}
+              <div class="supplemental-information-title">Phone</div>
+            {% else %}
+              <div class="supplemental-information-title">Phone {{ phoneCount }}</div>
+            {% endif %}
+            <div class="supplemental-information-attribute">{{ block.phoneNumber }}</div>
+          {% case "other" %}
+            <div class="supplemental-information-title">{{ block.method }}</div>
+            {% if block.hyperlink|length %}
+              <div class="supplemental-information-attribute">
+                <a href="{{ block.hyperlink }}">{{ block.account }}</a>
+              </div>
+            {% else %}
+              <div class="supplemental-information-attribute">{{ block.account }}</div>
+            {% endif %}
+        {% endswitch %}
+      {% endfor %}
+    </div>
+  </section>
+</aside>
+{% endblock %}
