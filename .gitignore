@@ -2,8 +2,8 @@
 /craft/config/db.php
 
 **/.sass-cache/
-/httpdocs/node_modules/
-/httpdocs/cpresources/
+**/node_modules/
+**/cpresources/
 *.css.map
 .DS_Store
 /httpdocs/package-lock.json
