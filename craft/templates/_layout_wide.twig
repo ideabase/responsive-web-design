@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<html lang="en-US">
 <head>
   {% include '_global/head' %}
 </head>
-
 
 <body>
   {% if entry is defined %}
@@ -14,9 +13,8 @@
 
   <main class="group" role="main" id="content">
     <section class="main-content-area-wide group">
-    <h1>{{ entry.title }}</h1>
-    {% block content %}
-    {% endblock %}
+      {% block content %}
+      {% endblock %}
     </section>
   </main>
     

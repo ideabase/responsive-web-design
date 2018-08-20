@@ -1,0 +1,92 @@
+{% extends '_layout_wide' %}
+
+{% set course = entry.course.one() %}
+{% set instructor = course.instructor.one() %}
+
+{% block content %}
+<h1>{{ entry.title }}</h1>
+<h2>{{ course.title }}</h2>
+
+<dl class="detail-listing detail-listing--syllabus group">
+  <div class="detail-list__column">
+    <dt>Instructor:</dt>
+    <dd>{{ instructor.title }}</dd>
+		{% for block in instructor.instructorInformation.all() %}
+      {% if block.type == "email" %}
+        <dt>Instructor Email:</dt>
+        <dd><a href="mailto:{{ block.emailAddress }}">{{ block.emailAddress }}</a></dd>
+      {% endif %}
+		{% endfor %}
+    <dt>Term:</dt>
+    <dd>{{ course.term.one().title }}</dd>
+  </div>
+  <div class="detail-list__column">
+    <dt>Day/Time:</dt>
+    <dd>{{ course.dayTime }}</dd>
+    <dt>Location:</dt>
+    <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ course.location.one().address|url_encode }}">{{ course.location.one().title }}</a></dd>
+  </div>
+</dl>
+
+{% for block in entry.syllabusInfo.all() %}
+  {% switch block.type %}
+    {% case "about" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "topics" %}
+      <h4>{{ block.type.name }}</h4>
+      {{ block.body }}
+    {% case "prerequisites" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "change" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "goals" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "learning" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "materials" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "structure" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "preparing" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "schedule" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+      <div class="page-break"></div>
+    {% case "assignments" %}
+      {# TODO #}
+    {% case "attendance" %}
+      <h3 style="clear: left;">{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "late" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "group" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "grading" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "technology" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+      <div class="page-break"></div>
+    {% case "communicating" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+    {% case "university" %}
+      <h3>{{ block.type.name }}</h3>
+      {{ block.body }}
+  {% endswitch %}
+{% endfor %}
+
+<a href="{{ course.url }}" class="button small">Return to Course</a>
+{% endblock %}

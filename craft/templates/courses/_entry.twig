@@ -1,0 +1,80 @@
+{% extends '_layout' %}
+
+{% set instructor = entry.instructor.one() %}
+{% set syllabus = craft.entries.section('syllabi').relatedTo(entry).one() %}
+
+{% block content %}
+<h1>{{ entry.title }}</h1>
+<section>
+  <h2>Course Materials</h2>
+  <div class="gallery-container">
+    <dl class="gallery carousel">
+      <a href="{{ syllabus.url }}" class="gallery-item carousel-cell">
+        <dt class="gallery-item__icon syllabus"><span class="gallery-item__icon__name">Syllabus</span></dt>
+        <dd class="gallery-item__description">Specific details on course policies and grading.</dd>
+      </a>
+      <a href="schedule" class="gallery-item carousel-cell">
+        <dt class="gallery-item__icon calendar"><span class="gallery-item__icon__name">Calendar</span></dt>
+        <dd class="gallery-item__description">Class schedules, assignments, due dates and slides.</dd>
+      </a>
+      <a href="assignments" class="gallery-item carousel-cell">
+        <dt class="gallery-item__icon assignments"><span class="gallery-item__icon__name">Assignments</span></dt>
+        <dd class="gallery-item__description">See a detailed list of assignments and points.</dd>
+      </a>
+      <a href="groups" class="gallery-item carousel-cell">
+        <dt class="gallery-item__icon groups"><span class="gallery-item__icon__name">Groups</span></dt>
+        <dd class="gallery-item__description">See more about your group and semester-long project.</dd>
+      </a>
+    </dl>
+  </div>
+</section>
+<section class="main-content-area">
+  <section>
+    <h2>Announcements</h2>
+    <div class="blog-posts group">
+      {% for post in craft.entries.section('announcements').relatedTo(entry).limit(4).all() %}
+        <div class="blog-post group">
+          <a href="{{ post.url }}">
+            <div class="blog-post-date">
+              <div class="blog-post-month">
+                {{ post.dateCreated|date('M') }}
+              </div>
+              <div class="blog-post-day">
+                {{ post.dateCreated|date('d') }}
+              </div>
+            </div>
+            <div class="blog-post-blurb">
+              <div class="blog-post-title">
+                <h3>{{ post.title }}</h3>
+              </div>
+              <div class="blog-post-summary">
+                {{ post.intro }}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    <a class="small button" href="/announcements">View All Announcements</a>
+  </section>
+</section>
+<aside role="complementary">
+  <section class="basic-information">
+  <h2>Registration Details</h2>
+    <dl class="detail-listing group">
+      <dt>Instructor:</dt>
+      <dd>{{ instructor.title }}</dd>
+      <dt>Term:</dt>
+      <dd>{{ entry.term.one() }}</dd>
+      <dt>Day/Time:</dt>
+      <dd>{{ entry.dayTime }}</dd>
+      <dt>Room:</dt>
+      <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ entry.location.one().address|url_encode }}">{{ entry.location.one().title }}</a></dd>
+    </dl>
+  </section>
+  <section class="about-course">
+    <h2>About the Course</h2>
+    {{ entry.body }}
+  </section>
+</aside>
+{% endblock %}
