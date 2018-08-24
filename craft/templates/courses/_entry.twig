@@ -2,6 +2,7 @@
 
 {% set instructor = entry.instructor.one() %}
 {% set syllabus = craft.entries.section('syllabi').relatedTo(entry).one() %}
+{% set calendar = craft.entries.section('calendars').relatedTo(entry).one() %}
 
 {% block content %}
 <h1>{{ entry.title }}</h1>
@@ -13,7 +14,7 @@
         <dt class="gallery-item__icon syllabus"><span class="gallery-item__icon__name">Syllabus</span></dt>
         <dd class="gallery-item__description">Specific details on course policies and grading.</dd>
       </a>
-      <a href="schedule" class="gallery-item carousel-cell">
+      <a href="{{ calendar.url }}" class="gallery-item carousel-cell">
         <dt class="gallery-item__icon calendar"><span class="gallery-item__icon__name">Calendar</span></dt>
         <dd class="gallery-item__description">Class schedules, assignments, due dates and slides.</dd>
       </a>

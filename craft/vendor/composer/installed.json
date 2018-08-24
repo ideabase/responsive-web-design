@@ -291,12 +291,12 @@
     },
     {
         "name": "craftcms/cms",
-        "version": "3.0.20",
-        "version_normalized": "3.0.20.0",
+        "version": "3.0.21",
+        "version_normalized": "3.0.21.0",
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/craftcms/cms/zipball/def373ae3e0f1b8b469efd8399d71f87301c6a0e",
-            "reference": "def373ae3e0f1b8b469efd8399d71f87301c6a0e",
+            "url": "https://api.github.com/repos/craftcms/cms/zipball/51e34f3d68c93e8b9bc3350cd9e19d2e21b5b517",
+            "reference": "51e34f3d68c93e8b9bc3350cd9e19d2e21b5b517",
             "shasum": ""
         },
         "require": {
@@ -343,7 +343,7 @@
             "ext-imagick": "Adds support for more image processing formats and options.",
             "ext-intl": "Adds rich internationalization support."
         },
-        "time": "2018-08-14T17:37:50+00:00",
+        "time": "2018-08-21T17:33:23+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -458,24 +458,22 @@
     },
     {
         "name": "craftcms/redactor",
-        "version": "2.1.5",
-        "version_normalized": "2.1.5.0",
+        "version": "2.1.6",
+        "version_normalized": "2.1.6.0",
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/craftcms/redactor/zipball/6a508a603c07b55720f17132e2524420525c285a",
-            "reference": "6a508a603c07b55720f17132e2524420525c285a",
+            "url": "https://api.github.com/repos/craftcms/redactor/zipball/86699fb2e9be6c689b3f5da75145acacf9497938",
+            "reference": "86699fb2e9be6c689b3f5da75145acacf9497938",
             "shasum": ""
         },
         "require": {
             "craftcms/cms": "^3.0.0-RC15"
         },
-        "time": "2018-07-30T13:40:33+00:00",
+        "time": "2018-08-21T07:54:14+00:00",
         "type": "craft-plugin",
         "extra": {
             "name": "Redactor",
-            "handle": "redactor",
-            "changelogUrl": "https://raw.githubusercontent.com/craftcms/redactor/master/CHANGELOG.md",
-            "downloadUrl": "https://github.com/craftcms/redactor/archive/master.zip"
+            "handle": "redactor"
         },
         "installation-source": "dist",
         "autoload": {
@@ -504,8 +502,7 @@
             "email": "support@craftcms.com",
             "issues": "https://github.com/craftcms/redactor/issues?state=open",
             "source": "https://github.com/craftcms/redactor",
-            "docs": "https://github.com/craftcms/redactor",
-            "rss": "https://github.com/craftcms/redactor/commits/master.atom"
+            "docs": "https://github.com/craftcms/redactor"
         }
     },
     {
@@ -1112,12 +1109,12 @@
     },
     {
         "name": "league/flysystem",
-        "version": "1.0.45",
-        "version_normalized": "1.0.45.0",
+        "version": "1.0.46",
+        "version_normalized": "1.0.46.0",
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
-            "reference": "a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
+            "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f3e0d925c18b92cf3ce84ea5cc58d62a1762a2b2",
+            "reference": "f3e0d925c18b92cf3ce84ea5cc58d62a1762a2b2",
             "shasum": ""
         },
         "require": {
@@ -1142,7 +1139,7 @@
             "spatie/flysystem-dropbox": "Allows you to use Dropbox storage",
             "srmklive/flysystem-dropbox-v2": "Allows you to use Dropbox storage for PHP 5 applications"
         },
-        "time": "2018-05-07T08:44:23+00:00",
+        "time": "2018-08-22T07:45:22+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

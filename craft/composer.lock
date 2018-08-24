@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e70f62353d7d88eb45b4cce09ac92ebe",
+    "content-hash": "1835152e5e6e190920d66c4fa3058eb6",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -288,11 +288,11 @@
         },
         {
             "name": "craftcms/cms",
-            "version": "3.0.20",
+            "version": "3.0.21",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/cms/zipball/def373ae3e0f1b8b469efd8399d71f87301c6a0e",
-                "reference": "def373ae3e0f1b8b469efd8399d71f87301c6a0e",
+                "url": "https://api.github.com/repos/craftcms/cms/zipball/51e34f3d68c93e8b9bc3350cd9e19d2e21b5b517",
+                "reference": "51e34f3d68c93e8b9bc3350cd9e19d2e21b5b517",
                 "shasum": ""
             },
             "require": {
@@ -363,7 +363,7 @@
                 "docs": "https://github.com/craftcms/docs",
                 "rss": "https://github.com/craftcms/cms/releases.atom"
             },
-            "time": "2018-08-14T17:37:50+00:00"
+            "time": "2018-08-21T17:33:23+00:00"
         },
         {
             "name": "craftcms/oauth2-craftid",
@@ -449,11 +449,11 @@
         },
         {
             "name": "craftcms/redactor",
-            "version": "2.1.5",
+            "version": "2.1.6",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/redactor/zipball/6a508a603c07b55720f17132e2524420525c285a",
-                "reference": "6a508a603c07b55720f17132e2524420525c285a",
+                "url": "https://api.github.com/repos/craftcms/redactor/zipball/86699fb2e9be6c689b3f5da75145acacf9497938",
+                "reference": "86699fb2e9be6c689b3f5da75145acacf9497938",
                 "shasum": ""
             },
             "require": {
@@ -462,9 +462,7 @@
             "type": "craft-plugin",
             "extra": {
                 "name": "Redactor",
-                "handle": "redactor",
-                "changelogUrl": "https://raw.githubusercontent.com/craftcms/redactor/master/CHANGELOG.md",
-                "downloadUrl": "https://github.com/craftcms/redactor/archive/master.zip"
+                "handle": "redactor"
             },
             "autoload": {
                 "psr-4": {
@@ -492,10 +490,9 @@
                 "email": "support@craftcms.com",
                 "issues": "https://github.com/craftcms/redactor/issues?state=open",
                 "source": "https://github.com/craftcms/redactor",
-                "docs": "https://github.com/craftcms/redactor",
-                "rss": "https://github.com/craftcms/redactor/commits/master.atom"
+                "docs": "https://github.com/craftcms/redactor"
             },
-            "time": "2018-07-30T13:40:33+00:00"
+            "time": "2018-08-21T07:54:14+00:00"
         },
         {
             "name": "craftcms/server-check",
@@ -1075,11 +1072,11 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.45",
+            "version": "1.0.46",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
-                "reference": "a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f3e0d925c18b92cf3ce84ea5cc58d62a1762a2b2",
+                "reference": "f3e0d925c18b92cf3ce84ea5cc58d62a1762a2b2",
                 "shasum": ""
             },
             "require": {
@@ -1144,7 +1141,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2018-05-07T08:44:23+00:00"
+            "time": "2018-08-22T07:45:22+00:00"
         },
         {
             "name": "league/oauth2-client",
