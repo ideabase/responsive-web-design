@@ -1,34 +1,24 @@
 {% extends '_layout_wide' %}
 {% block content %}
   <h1>{{ entry.title }}</h1>
+
   {% for calendarSection in craft.categories.group('calendarSections').relatedTo(entry).orderBy('elements.dateCreated').all() %}
+
     <h2 class="part">{{ calendarSection.title }}</h2>
+
     {% for event in craft.entries.section('calendarEvents').relatedTo(calendarSection).orderBy('date').all() %} {# order by event date field #}
 
-
-
       <div class="class-entry group">
-        <input class="toggle"{% if event.date|date('Y-m-d') == now|date('Y-m-d') %} checked{% endif %} id="toggle-{{ 'now'|date('c') }}" type="checkbox" name="toggle" />
+        <input class="toggle"{% if event.date|date('Y-m-d') <= 'now'|date('Y-m-d') %} checked{% endif %} id="toggle-{{ event.date|date('c') }}" type="checkbox" name="toggle" />
         <label for="toggle-{{ event.date|date('c') }}">
 
           <div class="blog-post-intro group">
-            <div class="blog-post-date {{ classes.status }}">
+            <div class="blog-post-date{% if event.date|date('U') < 'now'|date('U') %} blog-post-date--past{% endif %}">
+
               <div class="blog-post-month">
-                {% set m = classes.date | date: "%B" %}
-                {% case m %}
-                  {% when 'April' or 'May' or 'June' or 'July' %}{{ m }}
-                  {% when 'September' %}Sept
-                  {% when 'October' %}Oct
-                  {% when 'November' %}Nov
-                  {% when 'December' %}Dec
-                  {% when 'January' %}Jan
-                  {% when 'February' %}Feb
-                  {% when 'March' %}Mar
-                  {% when 'August' %}Aug
-                  {% else %}{{ classes.date | date: "%b" }}.
-                {% endcase %}
+                {{ event.date|date('M') }}
               </div>
-              <div class="blog-post-day">{{ classes.date | date: '%d' }}</div>
+              <div class="blog-post-day">{{ event.date|date('d') }}</div>
             </div>
             <div class="class-title">
               <h3>{{ event.title }}</h3>
@@ -36,25 +26,24 @@
             </div>
           </div>
         </label>
-        <div id="content-{{ classes.date | date_to_xmlschema }}" class="class-summary">
-            <dl>
-              <dt>Read For Class</dt>
-              <dd>{{ event.reading }}</dd>
-              <dt>Due Today</dt>
-              <dd>{# TODO #}</dd>
-              <dt>Assigned Today</dt>
-              <dd>{# TODO #}</dd>
-              {% if classes.slides %}
-                <dt>Slides from Class</dt>
-                <dd><a href="{{ classes.slides }}">View Slides From Class</a></dd>
-              {% endif %}
-            </dl>
+        <div id="content-{{ event.date|date('c') }}" class="class-summary">
+          <dl>
+            <dt>Read For Class</dt>
+            <dd>{% if event.reading %}{{ event.reading }}{% else %}There's nothing to read for today.{% endif %}</dd>
+            <dt>Due</dt>
+            <dd>{# TODO #}</dd>
+            <dt>Assigned</dt>
+            <dd>{# TODO #}</dd>
+            {% if event.slides %}
+              <dt>Slides from Class</dt>
+              <dd><a href="{{ event.slides }}">View Slides From Class</a></dd>
+            {% endif %}
+          </dl>
         </div>
       </div>
-
-
-
     {% endfor %}
+
   {% endfor %}
+  
   <a href="/class" class="button small">Return to Class</a>
 {% endblock %}
