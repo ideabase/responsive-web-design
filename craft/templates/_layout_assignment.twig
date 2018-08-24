@@ -17,9 +17,11 @@
     <h1>{{ entry.title }}</h1>
     <dl>
       <dt>Points</dt>
-      <dd>{{ entry.assignmentPoints }}</dd>
-      <dt>Due Date</dt>
-      <dd>{{ entry.dueDate }}</dd>
+      <dd>{{ entry.points }}</dd>
+      <dt>Assigned</dt>
+      <dd>{{ entry.assignedDate|date('F d, Y') }}</dd>
+      <dt>Due</dt>
+      <dd>{{ entry.dueDate|date('F d, Y') }}</dd>
     </dl>
     <hr>
     {% block content %}
