@@ -1,0 +1,21 @@
+{% extends '_layout_wide' %}
+
+{% block content %}
+  <h1>{{ entry.title }}</h1>
+  <a href="/class" class="button small">Return to Class</a>
+
+  {% for assignmentType in craft.categories.group('assignmentTypes').relatedTo(entry).orderBy('elements.dateCreated').all %}
+
+    <h2>{{ assignmentType.title }}</h2>
+
+    <ul>
+    {% for assignment in craft.entries.section('assignments').relatedTo(assignmentType).orderBy('dueDate').all %}
+
+      <li><a class="{% if assignment.dueDate|date('U') < 'now'|date('U') %}assignment-completed{% else %}not-completed{% endif %}" href="{{ assignment.url }}">{{ assignment.title }} ({{ assignment.points }} points)</a></li>
+
+    {% endfor %}
+    </ul>
+
+  {% endfor %}
+  
+{% endblock %}

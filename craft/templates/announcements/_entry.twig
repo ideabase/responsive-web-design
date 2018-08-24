@@ -3,8 +3,8 @@
   {{ entry.intro }}
   {% for block in entry.announcement.all() %}
     {% switch block.type %}
-      {% case "paragraph" %}
-        {{ block.paragraph }}
+      {% case "body" %}
+        {{ block.body }}
       {% case "button" %}
         <p><a href="{{ block.buttonUrl }}" class="small button">{{ block.text }}</a></p>
       {% case "hr" %}

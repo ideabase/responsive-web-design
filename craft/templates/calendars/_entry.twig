@@ -6,10 +6,10 @@
 
     <h2 class="part">{{ calendarSection.title }}</h2>
 
-    {% for event in craft.entries.section('calendarEvents').relatedTo(calendarSection).orderBy('date').all() %} {# order by event date field #}
+    {% for event in craft.entries.section('calendarEvents').relatedTo(calendarSection).orderBy('date').all() %}
 
       <div class="class-entry group">
-        <input class="toggle"{% if event.date|date('Y-m-d') <= 'now'|date('Y-m-d') %} checked{% endif %} id="toggle-{{ event.date|date('c') }}" type="checkbox" name="toggle" />
+        <input class="toggle"{% if event.date|date('U') < 'now'|date('U') %} checked{% endif %} id="toggle-{{ event.date|date('c') }}" type="checkbox" name="toggle" />
         <label for="toggle-{{ event.date|date('c') }}">
 
           <div class="blog-post-intro group">
