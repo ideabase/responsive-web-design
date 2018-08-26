@@ -1,4 +1,4 @@
-# IdeaBase Starter Kit 2.0
+# RWD Website - Craft CMS Version
 IdeaBase Starter Kit v2 - Includes Grunt + Pattern Lab + Craft CMS
 
 ## Setup Instructions
