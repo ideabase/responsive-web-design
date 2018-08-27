@@ -967,7 +967,7 @@ aside.aside-home {
 	background-color: white;
 	background-size: cover;
 	background-position: center bottom;
-	background-image: url(/assets/img/uploads/shapes.svg);
+	background-image: url('/assets/img/ui/shapes.svg');
 }
 @media screen and (min-width: 1200px) {
 	.tagline-container:after {
@@ -1824,19 +1824,19 @@ blockquote p {
 }
 
 .gallery-item__icon.syllabus {
-	background-image: url(/assets/img/uploads/syllabus.svg);
+	background-image: url('/assets/img/ui/syllabus.svg');
 }
 
 .gallery-item__icon.calendar {
-	background-image: url(/assets/img/uploads/calendar.svg);
+	background-image: url('/assets/img/ui/calendar.svg');
 }
 
 .gallery-item__icon.assignments {
-	background-image: url(/assets/img/uploads/assignments.svg);
+	background-image: url('/assets/img/ui/assignments.svg');
 }
 
 .gallery-item__icon.groups {
-	background-image: url(/assets/img/uploads/groups.svg);
+	background-image: url('/assets/img/ui/groups.svg');
 }
 
 .gallery-item__description {
@@ -2093,7 +2093,7 @@ blockquote p {
 
 .class-entry label:after {
   content: '';
-	background-image: url(/assets/img/uploads/down-arrow.svg);
+	background-image: url('/assets/img/ui/down-arrow.svg');
 	width: 18px;
 	height: 18px;
 	background-size: 100% auto;

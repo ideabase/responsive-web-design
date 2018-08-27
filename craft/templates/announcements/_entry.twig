@@ -1,14 +1,28 @@
 {% extends '_layout_post' %}
+
 {% block content %}
   {{ entry.intro }}
+
   {% for block in entry.announcement.all() %}
+
     {% switch block.type %}
-      {% case "body" %}
+      {% case 'body' %}
         {{ block.body }}
-      {% case "button" %}
-        <p><a href="{{ block.buttonUrl }}" class="small button">{{ block.text }}</a></p>
-      {% case "hr" %}
+
+      {% case 'button' %}
+        <a href="{{ block.buttonUrl }}" class="small button">{{ block.text }}</a>
+
+      {% case 'hr' %}
         <hr>
+
+      {% case 'image' %}
+        <figure class="figure">
+          <a href="{{ block.image.one().url }}">
+            <img src="{{ block.image.one().url }}" alt="{{ block.altText }}">
+          </a>
+        </figure>
     {% endswitch %}
+
   {% endfor %}
+
 {% endblock %}

@@ -2,4 +2,26 @@
 
 {% block content %}
 
+  {% for block in entry.assignmentBody.all() %}
+
+    {% switch block.type %}
+      {% case 'body' %}
+        {{ block.body }}
+
+      {% case 'button' %}
+        <a href="{{ block.buttonUrl }}" class="small button">{{ block.text }}</a>
+
+      {% case 'hr' %}
+        <hr>
+
+      {% case 'image' %}
+        <figure class="figure">
+          <a href="{{ block.image.one().url }}">
+            <img src="{{ block.image.one().url }}" alt="{{ block.altText }}">
+          </a>
+        </figure>
+    {% endswitch %}
+
+  {% endfor %}
+
 {% endblock %}

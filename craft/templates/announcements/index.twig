@@ -1,16 +1,21 @@
 {% extends '_layout_wide' %}
+
 {% block content %}
 <h1>{{ entry.heading }}</h1>
 {{ entry.body }}
+
 <h2>{{ entry.subheading }}</h2>
 <div class="blog-posts">
+
   {% for post in craft.entries.section('announcements').all() %}
+
     <div class="blog-post group">
       <a href="{{ post.url }}">
         <div class="blog-post-date">
           <div class="blog-post-month">
             {{ post.dateCreated|date('M') }}
           </div>
+
           <div class="blog-post-day">
             {{ post.dateCreated|date('d') }}
           </div>
@@ -19,12 +24,15 @@
           <div class="blog-post-title">
             <h3>{{ post.title }}</h3>
           </div>
+          
           <div class="blog-post-summary">
             {{ post.intro }}
           </div>
         </div>
       </a>
     </div>
+
   {% endfor %}
+
 </div>
 {% endblock %}

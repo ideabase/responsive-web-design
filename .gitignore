@@ -1,5 +1,6 @@
 /craft/config/general.php
 /craft/config/db.php
+/httpdocs/assets/img/uploads/
 
 **/.sass-cache/
 **/node_modules/

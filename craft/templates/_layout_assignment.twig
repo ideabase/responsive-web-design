@@ -26,7 +26,7 @@
     <hr>
     {% block content %}
     {% endblock %}
-    <a class="button small" href="../">Return to Assignments</a>
+    <a class="button small" href="{{ craft.entries.section('assignmentLists').relatedTo(craft.categories.group('assignmentTypes').relatedTo(entry).one()).one().url }}">Return to Assignments</a>
     </section>
   </main>
     
