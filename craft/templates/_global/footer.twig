@@ -2,9 +2,6 @@
 	<div class="footer-inner">
 		<div class="footer-contact-information">
 			{{ footer.body }}
-			{% for instructor in craft.entries.section('instructors').all() %}
-				<p><a class="footer-instructor" href="mailto:{{ instructor.instructorInformation.one().emailAddress }}">Instructor: {{ instructor.title }}</a></p>
-			{% endfor %}
 			<div class="footer-supplemental">
 				{% for block in footer.hyperlink.all() %}
 					<a href="{{ block.linkUrl }}">{{ block.linkText }}</a>

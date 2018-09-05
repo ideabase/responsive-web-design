@@ -29,63 +29,37 @@
 </dl>
 
 {% for block in entry.syllabusInfo.all() %}
+
   {% switch block.type %}
-    {% case "about" %}
-      <h3>{{ block.type.name }}</h3>
+    {% case 'body' %}
       {{ block.body }}
-    {% case "topics" %}
-      <h4>{{ block.type.name }}</h4>
-      {{ block.body }}
-    {% case "prerequisites" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "change" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "goals" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "learning" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "materials" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "structure" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "preparing" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "schedule" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-      <div class="page-break"></div>
-    {% case "assignments" %}
-      {# TODO #}
-    {% case "attendance" %}
-      <h3 style="clear: left;">{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "late" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "group" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "grading" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "technology" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-      <div class="page-break"></div>
-    {% case "communicating" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
-    {% case "university" %}
-      <h3>{{ block.type.name }}</h3>
-      {{ block.body }}
+
+    {% case 'assignmentsList' %}
+      {% for assignmentType in craft.categories.group('assignmentTypes').all() %}
+        <div class="table-float">
+          <h4>{{ assignmentType.title }}</h4>
+          <table>
+            <thead>
+              <th style="text-align:left;">Assignment</th>
+              <th style="text-align:left;">Points</th>
+            </thead>
+            <tbody>
+              {% for assignment in craft.entries.section('assignments').relatedTo(assignmentType).all() %}
+                <tr>
+                  <td>
+                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>
+                  </td>
+                  <td>
+                    {{ assignment.points }}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
   {% endswitch %}
+
 {% endfor %}
 
 <a href="{{ course.url }}" class="button small">Return to Course</a>

@@ -2390,6 +2390,8 @@ class ComposerStaticInit0c5faac47b3986e8bbc2f359551b0d76
         'craft\\migrations\\m180411_102218_fix_db_routes' => __DIR__ . '/..' . '/craftcms/cms/src/migrations/m180411_102218_fix_db_routes.php',
         'craft\\migrations\\m180416_205628_resourcepaths_table' => __DIR__ . '/..' . '/craftcms/cms/src/migrations/m180416_205628_resourcepaths_table.php',
         'craft\\migrations\\m180418_205713_widget_cleanup' => __DIR__ . '/..' . '/craftcms/cms/src/migrations/m180418_205713_widget_cleanup.php',
+        'craft\\migrations\\m180824_193422_case_sensitivity_fixes' => __DIR__ . '/..' . '/craftcms/cms/src/migrations/m180824_193422_case_sensitivity_fixes.php',
+        'craft\\migrations\\m180901_151639_fix_matrixcontent_tables' => __DIR__ . '/..' . '/craftcms/cms/src/migrations/m180901_151639_fix_matrixcontent_tables.php',
         'craft\\models\\AssetIndexData' => __DIR__ . '/..' . '/craftcms/cms/src/models/AssetIndexData.php',
         'craft\\models\\AssetTransform' => __DIR__ . '/..' . '/craftcms/cms/src/models/AssetTransform.php',
         'craft\\models\\AssetTransformIndex' => __DIR__ . '/..' . '/craftcms/cms/src/models/AssetTransformIndex.php',

@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 /* Set body type and consistent margins/padding */
 
 body {
@@ -27,7 +29,6 @@ body {
 * {
 	box-sizing: border-box;
 }
-
 
 /* Basic Typography, Lists, Tables */
 
@@ -150,6 +151,10 @@ p a, ul a, ol a, dd a {
 
 p a:hover, p a:focus {
 	color: #393839;
+}
+
+.table-float+h3 {
+	clear: left;
 }
 
 /* Headings */
@@ -367,7 +372,6 @@ main img {
 
 }
 
-
 .main-content-area-full img {
 	max-width: 100%;
 	width: 100%;
@@ -408,7 +412,6 @@ main img {
 	#Page-1 {
 		animation: text .5s ease;
 	}
-
 
 	#tablet-text-top {
 		opacity: 0;
@@ -541,7 +544,6 @@ main img {
 .blog-post h4 {
 	font-size: 1em;
 }
-
 
 /* Header */
 
@@ -723,7 +725,6 @@ a.svg:after {
 	}
 }
 
-
 /* Main Content Area */
 
 main {
@@ -811,12 +812,10 @@ p.introduction-home {
 	}
 }
 
-
 main {
 	margin-top: 0;
 	padding-top: 0.5em;
 }
-
 
 /* Supplemental Information Area */
 
@@ -829,6 +828,7 @@ main {
 	 margin-top: 1em;
 	 width: 100%;
 	 box-shadow: 4px 4px 0px #393839;
+	 margin-bottom: 1em;
 }
 
 .supplemental-information-title {
@@ -853,7 +853,8 @@ aside img {
 	height: auto;
 	margin-top: 1em;
 	box-shadow: 4px 4px 0px rgb(240,99,116);
-	margin-bottom: 2em;
+	margin-bottom: 1.5em;
+	clear: left;
 }
 
 .instructor-aside {
@@ -883,6 +884,7 @@ aside section {
 		width: inherit;
 		margin-top: 1em;
 		width: 45%;
+		margin-bottom: 3em;
 	}
 }
 
@@ -943,14 +945,12 @@ aside.aside-home {
 
 }
 
-
 /* Tagline */
 
 .tagline-container {
 	background: rgb(240,98,116);
 	margin-bottom: 2em;
 }
-
 
 @media screen and (min-width: 800px) {
 	.tagline-container {
@@ -967,7 +967,7 @@ aside.aside-home {
 	background-color: white;
 	background-size: cover;
 	background-position: center bottom;
-	background-image: url('/assets/img/ui/shapes.svg');
+	background-image: url(/assets/img/ui/shapes.svg);
 }
 @media screen and (min-width: 1200px) {
 	.tagline-container:after {
@@ -1132,8 +1132,6 @@ aside.aside-home {
 	}
 }
 
-
-
 /* Navigation */
 
 nav {
@@ -1144,7 +1142,6 @@ nav {
 	margin-top: 0em;
 	margin-bottom: 1em;
 }
-
 
 nav a {
 	text-decoration: none;
@@ -1193,12 +1190,9 @@ nav ul li:before {
 	content: none;
 }
 
-
-
 nav ul li a.active {
 	font-weight: bold;
 }
-
 
 nav ul li:last-child:after {
 	content: "";
@@ -1285,9 +1279,7 @@ nav ul li:last-child:after {
 
 }
 
-
 /* Accessible Skip to Content Link */
-
 
 #skip-to-content {
   padding: 1em;
@@ -1304,7 +1296,6 @@ nav ul li:last-child:after {
   background: #4593ff;
 }
 
-
 /* Accessible Way to Hide Content */
 
 .visually-hidden { /*https://developer.yahoo.com/blogs/ydn/clip-hidden-content-better-accessibility-53456.html*/
@@ -1318,7 +1309,6 @@ nav ul li:last-child:after {
     overflow: hidden;
 }
 body:hover .visually-hidden a, body:hover .visually-hidden input, body:hover .visually-hidden button { display: none !important; }
-
 
 /* Footer */
 
@@ -1409,7 +1399,7 @@ footer img {
 .footer-instructor {
 	padding-bottom: 1em;
 	display: inline-block;
-	font-size: 1em;
+	font-size: 1.1em;
 	display: block;
 	margin-top: 1.5em;
 	margin-bottom: 1em;
@@ -1442,8 +1432,6 @@ footer img {
 	}
 
 }
-
-
 
 /* Buttons */
 
@@ -1487,8 +1475,6 @@ footer img {
 	background-color: #DE5667;
 	color: white;
 }
-
-
 
 /* Calendars */
 
@@ -1579,8 +1565,6 @@ footer img {
 	font-weight: bold;
 	font-size: 1.8em;
 }
-
-
 
 /* Courses */
 
@@ -1824,19 +1808,19 @@ blockquote p {
 }
 
 .gallery-item__icon.syllabus {
-	background-image: url('/assets/img/ui/syllabus.svg');
+	background-image: url(/assets/img/ui/syllabus.svg);
 }
 
 .gallery-item__icon.calendar {
-	background-image: url('/assets/img/ui/calendar.svg');
+	background-image: url(/assets/img/ui/calendar.svg);
 }
 
 .gallery-item__icon.assignments {
-	background-image: url('/assets/img/ui/assignments.svg');
+	background-image: url(/assets/img/ui/assignments.svg);
 }
 
 .gallery-item__icon.groups {
-	background-image: url('/assets/img/ui/groups.svg');
+	background-image: url(/assets/img/ui/groups.svg);
 }
 
 .gallery-item__description {
@@ -1851,7 +1835,6 @@ blockquote p {
 		line-height: 1.2;
 	}
 }
-
 
 /* Color Swatches */
 
@@ -1904,7 +1887,6 @@ blockquote p {
 
 }
 
-
 @media screen and (min-width: 800px) {
 	.detail-list__column {
 		width: 50%;
@@ -1937,6 +1919,10 @@ blockquote p {
 }
 
 /* Flickity */
+
+/*! Flickity v2.0.2
+http://flickity.metafizzy.co
+---------------------------------------------- */
 
 .flickity-enabled {
   position: relative;
@@ -2093,7 +2079,7 @@ blockquote p {
 
 .class-entry label:after {
   content: '';
-	background-image: url('/assets/img/ui/down-arrow.svg');
+	background-image: url(/assets/img/ui/down-arrow.svg);
 	width: 18px;
 	height: 18px;
 	background-size: 100% auto;

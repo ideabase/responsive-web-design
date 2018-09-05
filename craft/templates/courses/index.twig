@@ -3,8 +3,11 @@
 {% block content %}
   <h1>{{ entry.heading }}</h1>
   <ul style="list-style-type:none !important">
-    {% for course in craft.entries.section('courses').all() %}
-      <a class="small button" href="{{ course.url }}">{{ course.title }}</a>
+    {% for courseType in craft.categories.group('courseTypes').all() %}
+      <h2>{{ courseType.title }}</h2>
+      {% for course in craft.entries.section('courses').relatedTo(courseType).orderBy('elements.dateCreated asc').all() %}
+        <a class="small button" href="{{ course.url }}">{{ course.title }}</a>
+      {% endfor %}
     {% endfor %}
   </ul>
 {% endblock %}

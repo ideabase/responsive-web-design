@@ -65,9 +65,9 @@
                 <p>There's nothing assigned this week.</p>
               {% endif %}
             </dd>
-            {% if event.slides %}
+            {% if event.slides|length %}
               <dt>Slides from Class</dt>
-              <dd><a href="{{ event.slides.url }}">View Slides From Class</a></dd>
+              <dd><a href="{{ event.slides.one().url }}">View Slides From Class</a></dd>
             {% endif %}
           </dl>
         </div>
