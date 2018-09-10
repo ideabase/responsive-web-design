@@ -102,9 +102,18 @@ table th {
 		padding-bottom: .5em;
 }
 
+.table-container {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.table-float {
+	float: left;
+	width: 100%;
+}
+
 @media screen and (min-width: 900px) {
 	.table-float {
-		float: left;
 		width: 50%;
 	}
 
@@ -151,10 +160,6 @@ p a, ul a, ol a, dd a {
 
 p a:hover, p a:focus {
 	color: #393839;
-}
-
-.table-float+h3 {
-	clear: left;
 }
 
 /* Headings */

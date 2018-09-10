@@ -71,7 +71,7 @@
       <dt>Day/Time:</dt>
       <dd>{{ entry.dayTime }}</dd>
       <dt>Room:</dt>
-      <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ entry.location.one().address|url_encode }}">{{ entry.location.one().title }}</a></dd>
+      <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ entry.location.one().address|url_encode }}">{{ entry.location.one().title }}</a>{% if entry.location.one().room|length %}, Room {{ entry.location.one().room }}{% endif %}</dd>
     </dl>
   </section>
   <section class="about-course">

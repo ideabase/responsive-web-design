@@ -24,7 +24,7 @@
     <dt>Day/Time:</dt>
     <dd>{{ course.dayTime }}</dd>
     <dt>Location:</dt>
-    <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ course.location.one().address|url_encode }}">{{ course.location.one().title }}</a></dd>
+    <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ course.location.one().address|url_encode }}">{{ course.location.one().title }}</a>{% if course.location.one().room|length %}, Room {{ course.location.one().room }}{% endif %}</dd>
   </div>
 </dl>
 
@@ -35,29 +35,31 @@
       {{ block.body }}
 
     {% case 'assignmentsList' %}
-      {% for assignmentType in craft.categories.group('assignmentTypes').all() %}
-        <div class="table-float">
-          <h4>{{ assignmentType.title }}</h4>
-          <table>
-            <thead>
-              <th style="text-align:left;">Assignment</th>
-              <th style="text-align:left;">Points</th>
-            </thead>
-            <tbody>
-              {% for assignment in craft.entries.section('assignments').relatedTo(assignmentType).all() %}
-                <tr>
-                  <td>
-                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>
-                  </td>
-                  <td>
-                    {{ assignment.points }}
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      {% endfor %}
+      <div class="table-container">
+        {% for assignmentType in craft.categories.group('assignmentTypes').all() %}
+          <div class="table-float">
+            <h4>{{ assignmentType.title }}</h4>
+            <table>
+              <thead>
+                <th style="text-align:left;">Assignment</th>
+                <th style="text-align:left;">Points</th>
+              </thead>
+              <tbody>
+                {% for assignment in craft.entries.section('assignments').relatedTo(assignmentType).all() %}
+                  <tr>
+                    <td>
+                      <a href="{{ assignment.url }}">{{ assignment.title }}</a>
+                    </td>
+                    <td>
+                      {{ assignment.points }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endfor %}
+      </div>
   {% endswitch %}
 
 {% endfor %}
