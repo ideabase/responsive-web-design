@@ -26,7 +26,12 @@ return [
 
     // Staging environment settings
     'staging' => [
-        'siteUrl' => null,
+        'siteUrl' => 'http://rwd.ideabase.cci.kent.edu/httpdocs/',
+        'aliases' => [
+            'basePath' => '',
+            'baseUrl' =>
+            'http://rwd.ideabase.cci.kent.edu/httpdocs/',
+          ],
     ],
 
     // Production environment settings
