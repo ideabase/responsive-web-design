@@ -32,6 +32,7 @@ return [
             'baseUrl' =>
             'http://rwd.ideabase.cci.kent.edu/httpdocs/',
           ],
+        'devMode' => true,
     ],
 
     // Production environment settings
