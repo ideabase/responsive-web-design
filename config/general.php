@@ -15,7 +15,7 @@ return [
 
     // Dev environment settings
     'dev' => [
-        'siteUrl' => 'http://rwdkent.local',
+        'siteUrl' => 'http://rwdkent.local/',
         'devMode' => true,
     ],
 
@@ -27,6 +27,6 @@ return [
 
     // Production environment settings
     'production' => [
-        'siteUrl' => 'https://rwdkent.com',
+        'siteUrl' => 'https://rwdkent.com/',
     ],
 ];
