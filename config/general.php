@@ -16,32 +16,17 @@ return [
     // Dev environment settings
     'dev' => [
         'siteUrl' => 'http://rwdkent.local',
-        'aliases' => [
-            'basePath' => '',
-            'baseUrl' =>
-            'http://rwdkent.local',
-          ],
         'devMode' => true,
     ],
 
     // Staging environment settings
     'staging' => [
         'siteUrl' => 'http://rwd.ideabase.cci.kent.edu/httpdocs/',
-        'aliases' => [
-            'basePath' => '',
-            'baseUrl' =>
-            'http://rwd.ideabase.cci.kent.edu/httpdocs/',
-          ],
         'devMode' => true,
     ],
 
     // Production environment settings
     'production' => [
         'siteUrl' => 'https://rwdkent.com',
-        'aliases' => [
-            'basePath' => '',
-            'baseUrl' =>
-            'https://www.rwdkent.com',
-          ],
     ],
 ];
