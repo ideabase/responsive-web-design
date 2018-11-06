@@ -9,7 +9,7 @@
 			<ul class="group">
 				{% for block in header.navigationItems.all() %}
 					<li>
-						<a {% if block.itemUrl in craft.app.request.absoluteUrl %}class="active"{% endif %} href="{{ block.itemUrl }}">{{ block.itemTitle }}</a>
+						<a {% if block.itemUrl in craft.app.request.absoluteUrl %}class="active"{% endif %} href="{{ siteUrl ~ block.itemUrl }}">{{ block.itemTitle }}</a>
 					</li>
 				{% endfor %}
 			</ul>

@@ -90,7 +90,9 @@
 <main role="main" class="group" id="content">
 	<section class="main-content-area">
 		{{ entry.body }}
-		<a href="{{ entry.hyperlink.one().linkUrl }}" class="button small">{{ entry.hyperlink.one().linkText }}</a>
+		{% for link in entry.hyperlink.all() %}
+			<a href="{{ siteUrl ~ link.linkUrl }}" class="button small">{{ link.linkText }}</a>
+		{% endfor %}
 	</section>
 </main>
 {% endblock %}

@@ -37,10 +37,6 @@ class ComposerStaticInit531abb82119048e37a570d64920e2432
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
         ),
-        'w' => 
-        array (
-            'wbrowar\\adminbar\\' => 17,
-        ),
         'm' => 
         array (
             'modules\\' => 8,
@@ -182,10 +178,6 @@ class ComposerStaticInit531abb82119048e37a570d64920e2432
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
-        ),
-        'wbrowar\\adminbar\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wbrowar/adminbar/src',
         ),
         'modules\\' => 
         array (
@@ -2658,15 +2650,6 @@ class ComposerStaticInit531abb82119048e37a570d64920e2432
         'enshrined\\svgSanitize\\data\\TagInterface' => __DIR__ . '/..' . '/enshrined/svg-sanitize/src/data/TagInterface.php',
         'mikehaertl\\shellcommand\\Command' => __DIR__ . '/..' . '/mikehaertl/php-shellcommand/src/Command.php',
         'modules\\Module' => __DIR__ . '/../..' . '/modules/Module.php',
-        'wbrowar\\adminbar\\AdminBar' => __DIR__ . '/..' . '/wbrowar/adminbar/src/AdminBar.php',
-        'wbrowar\\adminbar\\assetbundles\\AdminBar\\AdminBarAsset' => __DIR__ . '/..' . '/wbrowar/adminbar/src/assetbundles/adminbar/AdminBarAsset.php',
-        'wbrowar\\adminbar\\console\\controllers\\DefaultController' => __DIR__ . '/..' . '/wbrowar/adminbar/src/console/controllers/DefaultController.php',
-        'wbrowar\\adminbar\\controllers\\BarController' => __DIR__ . '/..' . '/wbrowar/adminbar/src/controllers/BarController.php',
-        'wbrowar\\adminbar\\events\\AdminBarRenderEvent' => __DIR__ . '/..' . '/wbrowar/adminbar/src/events/AdminBarRenderEvent.php',
-        'wbrowar\\adminbar\\models\\Settings' => __DIR__ . '/..' . '/wbrowar/adminbar/src/models/Settings.php',
-        'wbrowar\\adminbar\\services\\Bar' => __DIR__ . '/..' . '/wbrowar/adminbar/src/services/Bar.php',
-        'wbrowar\\adminbar\\services\\EditLinks' => __DIR__ . '/..' . '/wbrowar/adminbar/src/services/EditLinks.php',
-        'wbrowar\\adminbar\\twigextensions\\AdminBarTwigExtension' => __DIR__ . '/..' . '/wbrowar/adminbar/src/twigextensions/AdminBarTwigExtension.php',
         'yii\\BaseYii' => __DIR__ . '/..' . '/yiisoft/yii2/BaseYii.php',
         'yii\\base\\Action' => __DIR__ . '/..' . '/yiisoft/yii2/base/Action.php',
         'yii\\base\\ActionEvent' => __DIR__ . '/..' . '/yiisoft/yii2/base/ActionEvent.php',
