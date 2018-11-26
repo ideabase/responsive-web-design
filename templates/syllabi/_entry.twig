@@ -1,22 +1,38 @@
 {% extends '_layout_wide' %}
 
 {% set course = entry.course.one() %}
-{% set instructor = course.instructor.one() %}
 
 {% block content %}
-<h1>{{ entry.title }}</h1>
-<h2>{{ course.title }}</h2>
+<h1>Syllabus - {{ entry.title }}</h1>
+<h2>{{ course.courseNumber }}</h2>
 
 <dl class="detail-listing detail-listing--syllabus group">
   <div class="detail-list__column">
-    <dt>Instructor:</dt>
-    <dd>{{ instructor.title }}</dd>
-		{% for block in instructor.instructorInformation.all() %}
-      {% if block.type == "email" %}
-        <dt>Instructor Email:</dt>
-        <dd><a href="mailto:{{ block.emailAddress }}">{{ block.emailAddress }}</a></dd>
-      {% endif %}
-		{% endfor %}
+    <dt>Instructor{% if course.instructor|length > 1 %}{{ 's' }}{% endif %}:</dt>
+    <dd>
+      {%- for instructor in course.instructor.all() -%}
+        {%- if loop.index != course.instructor|length -%}
+          {{- instructor.title ~ ', ' -}}
+        {%- else -%}
+          {{- instructor.title -}}
+        {%- endif -%}
+      {%- endfor -%}
+    </dd>
+    <dt>Instructor Email{% if course.instructor|length > 1 %}{{ 's' }}{% endif %}:</dt>
+    <dd>
+      {%- for instructor in course.instructor.all() -%}
+        {%- set instructorIndex = loop.index -%}
+        {%- for block in instructor.instructorInformation.all() -%}
+          {%- if block.type == 'email' -%}
+            {%- if instructorIndex != course.instructor|length -%}
+              <a href="mailto:{{ block.emailAddress }}">{{- block.emailAddress -}}</a>{{- ', ' -}}
+            {%- else -%}
+              <a href="mailto:{{ block.emailAddress }}">{{- block.emailAddress -}}</a>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </dd>
     <dt>Term:</dt>
     <dd>{{ course.term.one().title }}</dd>
   </div>

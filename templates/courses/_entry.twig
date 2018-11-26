@@ -64,13 +64,21 @@
   <section class="basic-information">
   <h2>Registration Details</h2>
     <dl class="detail-listing group">
-      <dt>Instructor:</dt>
-      <dd>{{ instructor.title }}</dd>
+      <dt>Instructor{% if entry.instructor|length > 1 %}{{ 's' }}{% endif %}:</dt>
+      <dd>
+        {%- for instructor in entry.instructor.all() -%}
+          {%- if loop.index != entry.instructor|length -%}
+            {{- instructor.title ~ ', ' -}}
+          {%- else -%}
+            {{- instructor.title -}}
+          {%- endif -%}
+        {%- endfor -%}
+      </dd>
       <dt>Term:</dt>
       <dd>{{ entry.term.one() }}</dd>
       <dt>Day/Time:</dt>
       <dd>{{ entry.dayTime }}</dd>
-      <dt>Room:</dt>
+      <dt>Location:</dt>
       <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ entry.location.one().address|url_encode }}">{{ entry.location.one().title }}</a>{% if entry.location.one().room|length %}, Room {{ entry.location.one().room }}{% endif %}</dd>
     </dl>
   </section>
