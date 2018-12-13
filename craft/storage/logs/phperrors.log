@@ -1,0 +1,198 @@
+[18-Jul-2018 09:09:20 America/Los_Angeles] An Error occurred while handling another error:
+yii\base\InvalidConfigException: Connection::dsn cannot be empty. in /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Connection.php:602
+Stack trace:
+#0 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/db/Connection.php(183): yii\db\Connection->open()
+#1 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Connection.php(996): craft\db\Connection->open()
+#2 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Connection.php(983): yii\db\Connection->getMasterPdo()
+#3 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(253): yii\db\Connection->getSlavePdo()
+#4 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(1143): yii\db\Command->prepare(true)
+#5 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(399): yii\db\Command->queryInternal('fetchAll', NULL)
+#6 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/mysql/Schema.php(312): yii\db\Command->queryAll()
+#7 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/db/mysql/Schema.php(237): yii\db\mysql\Schema->findColumns(Object(craft\db\TableSchema))
+#8 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Schema.php(744): craft\db\mysql\Schema->loadTableSchema('resourcepaths')
+#9 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Schema.php(194): yii\db\Schema->getTableMetadata('{{%resourcepath...', 'schema', false)
+#10 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/QueryBuilder.php(365): yii\db\Schema->getTableSchema('{{%resourcepath...')
+#11 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/mysql/QueryBuilder.php(249): yii\db\QueryBuilder->prepareInsertValues('{{%resourcepath...', Array, Array)
+#12 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/QueryBuilder.php(345): yii\db\mysql\QueryBuilder->prepareInsertValues('{{%resourcepath...', Array, Array)
+#13 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/mysql/QueryBuilder.php(269): yii\db\QueryBuilder->insert('{{%resourcepath...', Array, Array)
+#14 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(546): yii\db\mysql\QueryBuilder->upsert('{{%resourcepath...', Array, Array, Array)
+#15 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/db/Command.php(122): yii\db\Command->upsert('{{%resourcepath...', Array, Array, Array)
+#16 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/AssetManager.php(96): craft\db\Command->upsert('{{%resourcepath...', Array, Array, Array, false)
+#17 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(525): craft\web\AssetManager->hash('/Users/matt/Doc...')
+#18 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/AssetManager.php(110): yii\web\AssetManager->publishDirectory('/Users/matt/Doc...', Array)
+#19 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(463): craft\web\AssetManager->publishDirectory('/Users/matt/Doc...', Array)
+#20 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetBundle.php(185): yii\web\AssetManager->publish('/Users/matt/Doc...', Array)
+#21 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(268): yii\web\AssetBundle->publish(Object(craft\web\AssetManager))
+#22 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(239): yii\web\AssetManager->loadBundle('craft\\web\\asset...', Array, true)
+#23 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/View.php(286): yii\web\AssetManager->getBundle('craft\\web\\asset...')
+#24 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Extension/Core.php(1605): yii\web\View->registerAssetBundle('craft\\web\\asset...')
+#25 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/helpers/Template.php(73): twig_get_attribute(Object(craft\web\twig\Environment), Object(Twig_Source), Object(craft\web\View), 'registerAssetBu...', Array, 'method', false, false)
+#26 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/94/94e4ec8d97e03495f5926951b2e123782a5cd5675bb2f6c6ebd451d72421d162.php(32): craft\helpers\Template::attribute(Object(craft\web\twig\Environment), Object(Twig_Source), Object(craft\web\View), 'registerAssetBu...', Array, 'method')
+#27 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_94200178fffe874272146a81ea6c83a922bed9831c7f8fe6d9845a267580951a->doDisplay(Array, Array)
+#28 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#29 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#30 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#31 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/f6/f6c2686f9d71b6779851790e2593265184142fccfae6eca64c692b2d67942857.php(33): craft\web\twig\Template->display(Array, Array)
+#32 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_cc23ac8fe58ef253cdd2c8bfb69efed4210beffcc1955f6b3f7535f4651ed43f->doDisplay(Array, Array)
+#33 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#34 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#35 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#36 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/2f/2fde1dc673639a7cbcbb675e6f5c44901449f55cc196832af6079936e4879cac.php(32): craft\web\twig\Template->display(Array, Array)
+#37 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_3b36b233b9dc902aa00be68a51f8815a4382e6d9234eaac9a7c569e8c07be514->doDisplay(Array, Array)
+#38 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#39 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#40 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#41 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(375): craft\web\twig\Template->display(Array)
+#42 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Environment.php(289): Twig_Template->render(Array)
+#43 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/View.php(305): Twig_Environment->render('503', Array)
+#44 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/View.php(352): craft\web\View->renderTemplate('503', Array)
+#45 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Controller.php(128): craft\web\View->renderPageTemplate('503', Array)
+#46 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/controllers/TemplatesController.php(209): craft\web\Controller->renderTemplate('503', Array)
+#47 [internal function]: craft\controllers\TemplatesController->actionRenderError()
+#48 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/InlineAction.php(57): call_user_func_array(Array, Array)
+#49 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/Controller.php(157): yii\base\InlineAction->runWithParams(Array)
+#50 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Controller.php(76): yii\base\Controller->runAction('render-error', Array)
+#51 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/Module.php(528): craft\web\Controller->runAction('render-error', Array)
+#52 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Application.php(273): yii\base\Module->runAction('templates/rende...', Array)
+#53 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/ErrorHandler.php(108): craft\web\Application->runAction('templates/rende...')
+#54 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/ErrorHandler.php(156): yii\web\ErrorHandler->renderException(Object(craft\web\ServiceUnavailableHttpException))
+#55 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/ErrorHandler.php(111): craft\web\ErrorHandler->renderException(Object(craft\web\ServiceUnavailableHttpException))
+#56 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/ErrorHandler.php(71): yii\base\ErrorHandler->handleException(Object(craft\web\ServiceUnavailableHttpException))
+#57 [internal function]: craft\web\ErrorHandler->handleException(Object(craft\web\ServiceUnavailableHttpException))
+#58 {main}
+
+Next craft\errors\DbConnectException: Craft CMS can’t connect to the database with the credentials in config/db.php. in /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/db/Connection.php:207
+Stack trace:
+#0 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Connection.php(996): craft\db\Connection->open()
+#1 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Connection.php(983): yii\db\Connection->getMasterPdo()
+#2 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(253): yii\db\Connection->getSlavePdo()
+#3 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(1143): yii\db\Command->prepare(true)
+#4 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(399): yii\db\Command->queryInternal('fetchAll', NULL)
+#5 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/mysql/Schema.php(312): yii\db\Command->queryAll()
+#6 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/db/mysql/Schema.php(237): yii\db\mysql\Schema->findColumns(Object(craft\db\TableSchema))
+#7 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Schema.php(744): craft\db\mysql\Schema->loadTableSchema('resourcepaths')
+#8 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Schema.php(194): yii\db\Schema->getTableMetadata('{{%resourcepath...', 'schema', false)
+#9 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/QueryBuilder.php(365): yii\db\Schema->getTableSchema('{{%resourcepath...')
+#10 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/mysql/QueryBuilder.php(249): yii\db\QueryBuilder->prepareInsertValues('{{%resourcepath...', Array, Array)
+#11 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/QueryBuilder.php(345): yii\db\mysql\QueryBuilder->prepareInsertValues('{{%resourcepath...', Array, Array)
+#12 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/mysql/QueryBuilder.php(269): yii\db\QueryBuilder->insert('{{%resourcepath...', Array, Array)
+#13 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/db/Command.php(546): yii\db\mysql\QueryBuilder->upsert('{{%resourcepath...', Array, Array, Array)
+#14 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/db/Command.php(122): yii\db\Command->upsert('{{%resourcepath...', Array, Array, Array)
+#15 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/AssetManager.php(96): craft\db\Command->upsert('{{%resourcepath...', Array, Array, Array, false)
+#16 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(525): craft\web\AssetManager->hash('/Users/matt/Doc...')
+#17 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/AssetManager.php(110): yii\web\AssetManager->publishDirectory('/Users/matt/Doc...', Array)
+#18 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(463): craft\web\AssetManager->publishDirectory('/Users/matt/Doc...', Array)
+#19 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetBundle.php(185): yii\web\AssetManager->publish('/Users/matt/Doc...', Array)
+#20 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(268): yii\web\AssetBundle->publish(Object(craft\web\AssetManager))
+#21 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/AssetManager.php(239): yii\web\AssetManager->loadBundle('craft\\web\\asset...', Array, true)
+#22 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/View.php(286): yii\web\AssetManager->getBundle('craft\\web\\asset...')
+#23 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Extension/Core.php(1605): yii\web\View->registerAssetBundle('craft\\web\\asset...')
+#24 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/helpers/Template.php(73): twig_get_attribute(Object(craft\web\twig\Environment), Object(Twig_Source), Object(craft\web\View), 'registerAssetBu...', Array, 'method', false, false)
+#25 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/94/94e4ec8d97e03495f5926951b2e123782a5cd5675bb2f6c6ebd451d72421d162.php(32): craft\helpers\Template::attribute(Object(craft\web\twig\Environment), Object(Twig_Source), Object(craft\web\View), 'registerAssetBu...', Array, 'method')
+#26 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_94200178fffe874272146a81ea6c83a922bed9831c7f8fe6d9845a267580951a->doDisplay(Array, Array)
+#27 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#28 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#29 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#30 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/f6/f6c2686f9d71b6779851790e2593265184142fccfae6eca64c692b2d67942857.php(33): craft\web\twig\Template->display(Array, Array)
+#31 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_cc23ac8fe58ef253cdd2c8bfb69efed4210beffcc1955f6b3f7535f4651ed43f->doDisplay(Array, Array)
+#32 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#33 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#34 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#35 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/2f/2fde1dc673639a7cbcbb675e6f5c44901449f55cc196832af6079936e4879cac.php(32): craft\web\twig\Template->display(Array, Array)
+#36 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_3b36b233b9dc902aa00be68a51f8815a4382e6d9234eaac9a7c569e8c07be514->doDisplay(Array, Array)
+#37 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#38 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#39 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#40 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(375): craft\web\twig\Template->display(Array)
+#41 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Environment.php(289): Twig_Template->render(Array)
+#42 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/View.php(305): Twig_Environment->render('503', Array)
+#43 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/View.php(352): craft\web\View->renderTemplate('503', Array)
+#44 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Controller.php(128): craft\web\View->renderPageTemplate('503', Array)
+#45 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/controllers/TemplatesController.php(209): craft\web\Controller->renderTemplate('503', Array)
+#46 [internal function]: craft\controllers\TemplatesController->actionRenderError()
+#47 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/InlineAction.php(57): call_user_func_array(Array, Array)
+#48 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/Controller.php(157): yii\base\InlineAction->runWithParams(Array)
+#49 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Controller.php(76): yii\base\Controller->runAction('render-error', Array)
+#50 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/Module.php(528): craft\web\Controller->runAction('render-error', Array)
+#51 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Application.php(273): yii\base\Module->runAction('templates/rende...', Array)
+#52 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/ErrorHandler.php(108): craft\web\Application->runAction('templates/rende...')
+#53 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/ErrorHandler.php(156): yii\web\ErrorHandler->renderException(Object(craft\web\ServiceUnavailableHttpException))
+#54 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/ErrorHandler.php(111): craft\web\ErrorHandler->renderException(Object(craft\web\ServiceUnavailableHttpException))
+#55 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/ErrorHandler.php(71): yii\base\ErrorHandler->handleException(Object(craft\web\ServiceUnavailableHttpException))
+#56 [internal function]: craft\web\ErrorHandler->handleException(Object(craft\web\ServiceUnavailableHttpException))
+#57 {main}
+
+Next Twig_Error_Runtime: An exception has been thrown during the rendering of a template ("Craft CMS can’t connect to the database with the credentials in config/db.php."). in /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/templates/_layouts/base.html:5
+Stack trace:
+#0 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#1 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#2 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#3 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/f6/f6c2686f9d71b6779851790e2593265184142fccfae6eca64c692b2d67942857.php(33): craft\web\twig\Template->display(Array, Array)
+#4 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_cc23ac8fe58ef253cdd2c8bfb69efed4210beffcc1955f6b3f7535f4651ed43f->doDisplay(Array, Array)
+#5 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#6 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#7 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#8 /Users/matt/Documents/ResponsiveWebDesign/craft/storage/runtime/compiled_templates/2f/2fde1dc673639a7cbcbb675e6f5c44901449f55cc196832af6079936e4879cac.php(32): craft\web\twig\Template->display(Array, Array)
+#9 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(390): __TwigTemplate_3b36b233b9dc902aa00be68a51f8815a4382e6d9234eaac9a7c569e8c07be514->doDisplay(Array, Array)
+#10 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(49): Twig_Template->displayWithErrorHandling(Array, Array)
+#11 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(367): craft\web\twig\Template->displayWithErrorHandling(Array, Array)
+#12 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/twig/Template.php(31): Twig_Template->display(Array, Array)
+#13 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Template.php(375): craft\web\twig\Template->display(Array)
+#14 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/twig/twig/lib/Twig/Environment.php(289): Twig_Template->render(Array)
+#15 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/View.php(305): Twig_Environment->render('503', Array)
+#16 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/View.php(352): craft\web\View->renderTemplate('503', Array)
+#17 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Controller.php(128): craft\web\View->renderPageTemplate('503', Array)
+#18 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/controllers/TemplatesController.php(209): craft\web\Controller->renderTemplate('503', Array)
+#19 [internal function]: craft\controllers\TemplatesController->actionRenderError()
+#20 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/InlineAction.php(57): call_user_func_array(Array, Array)
+#21 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/Controller.php(157): yii\base\InlineAction->runWithParams(Array)
+#22 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Controller.php(76): yii\base\Controller->runAction('render-error', Array)
+#23 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/Module.php(528): craft\web\Controller->runAction('render-error', Array)
+#24 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Application.php(273): yii\base\Module->runAction('templates/rende...', Array)
+#25 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/web/ErrorHandler.php(108): craft\web\Application->runAction('templates/rende...')
+#26 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/ErrorHandler.php(156): yii\web\ErrorHandler->renderException(Object(craft\web\ServiceUnavailableHttpException))
+#27 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/ErrorHandler.php(111): craft\web\ErrorHandler->renderException(Object(craft\web\ServiceUnavailableHttpException))
+#28 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/ErrorHandler.php(71): yii\base\ErrorHandler->handleException(Object(craft\web\ServiceUnavailableHttpException))
+#29 [internal function]: craft\web\ErrorHandler->handleException(Object(craft\web\ServiceUnavailableHttpException))
+#30 {main}
+Previous exception:
+craft\web\ServiceUnavailableHttpException in /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Application.php:498
+Stack trace:
+#0 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/craftcms/cms/src/web/Application.php(175): craft\web\Application->_processInstallRequest(Object(craft\web\Request))
+#1 /Users/matt/Documents/ResponsiveWebDesign/craft/vendor/yiisoft/yii2/base/Application.php(386): craft\web\Application->handleRequest(Object(craft\web\Request))
+#2 /Users/matt/Documents/ResponsiveWebDesign/html/index.php(15): yii\base\Application->run()
+#3 {main}
+$_SERVER = [
+    'HTTP_HOST' => 'responsivewebdesign.web',
+    'HTTP_CONNECTION' => 'keep-alive',
+    'HTTP_CACHE_CONTROL' => 'max-age=0',
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1',
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.117 Safari/537.36',
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+    'HTTP_REFERER' => 'http://responsivewebdesign.web/',
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate',
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.9',
+    'HTTP_COOKIE' => 'CRAFT_CSRF_TOKEN=51fbf5f2a4bf90ee8ce82ce8c25525dcd6b489ces%3A40%3A%22Fc5nrO0XJSjvZu_niwTT5IpQzOW7h0PihUxsSB7%7E%22%3B; _ga=GA1.2.1203569918.1531926434',
+    'PATH' => '/usr/bin:/bin:/usr/sbin:/sbin',
+    'SERVER_SIGNATURE' => '',
+    'SERVER_SOFTWARE' => 'Apache',
+    'SERVER_NAME' => 'responsivewebdesign.web',
+    'SERVER_ADDR' => '::1',
+    'SERVER_PORT' => '80',
+    'REMOTE_ADDR' => '::1',
+    'DOCUMENT_ROOT' => '/Users/matt/Documents/ResponsiveWebDesign/html',
+    'SERVER_ADMIN' => 'you@example.com',
+    'SCRIPT_FILENAME' => '/Users/matt/Documents/ResponsiveWebDesign/html/index.php',
+    'REMOTE_PORT' => '59699',
+    'GATEWAY_INTERFACE' => 'CGI/1.1',
+    'SERVER_PROTOCOL' => 'HTTP/1.1',
+    'REQUEST_METHOD' => 'GET',
+    'QUERY_STRING' => '',
+    'REQUEST_URI' => '/',
+    'SCRIPT_NAME' => '/index.php',
+    'PHP_SELF' => '/index.php',
+    'REQUEST_TIME_FLOAT' => 1531930160.415999889373779296875,
+    'REQUEST_TIME' => 1531930160,
+    'argv' => [],
+    'argc' => 0,
+]
