@@ -10,11 +10,13 @@
     {% for event in craft.entries.section('calendarEvents').relatedTo(calendarSection).orderBy('date').all() %}
 
       <div class="class-entry group">
-        <input class="toggle"{% if event.date|date('U') < 'now'|date('U') %} checked{% endif %} id="toggle-{{ event.date|date('c') }}" type="checkbox" name="toggle" />
+        {# toggle the current week's info open #}
+        <input class="toggle"{% if event.date <= date() and date() < event.date|date_modify('+1 week') %} checked{% endif %} id="toggle-{{ event.date|date('c') }}" type="checkbox" name="toggle" />
         <label for="toggle-{{ event.date|date('c') }}">
 
           <div class="blog-post-intro group">
-            <div class="blog-post-date{% if event.date|date('U') < 'now'|date('U') %} blog-post-date--past{% endif %}">
+            {# places check mark under date if 'now' is past the event week #}
+            <div class="blog-post-date{% if event.date|date_modify('+1 week') < date() %} blog-post-date--past{% endif %}">
 
               <div class="blog-post-month">
                 {{ event.date|date('M') }}
@@ -28,41 +30,51 @@
           </div>
         </label>
         <div id="content-{{ event.date|date('c') }}" class="class-summary">
-          <dl>
+          <dl class="calendar-dl">
             <dt>Read For Class</dt>
             <dd>{% if event.reading %}{{ event.reading }}{% else %}There's nothing to read for this week.{% endif %}</dd>
             <dt>Due</dt>
+            {# check if there are assignments due during event week, add them if so #}
             <dd>
-              {% set dueCount = 0 %}
-              {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
+              {% if event.dueToday|length %}
+                {{ event.dueToday }}
+              {% else %}
+                {% set dueCount = 0 %}
+
+                {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
+                  
+                  {% if (assignment.dueDate|date('Y-m') == event.date|date('Y-m')) and (assignment.dueDate|date('W') == event.date|date('W'))  %}
+                    {% set dueCount = dueCount + 1 %}
+                  
+                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>
+                  {% endif %}
+                {% endfor %}
                 
-                {% if (assignment.dueDate|date('Y-m') == event.date|date('Y-m')) and (assignment.dueDate|date('W') == event.date|date('W'))  %}
-                  {% set dueCount = dueCount + 1 %}
-                
-                  <p><a href="{{ assignment.url }}">{{ assignment.title }}</a></p>
+                {% if dueCount < 1 %}
+                  There's nothing due this week.
                 {% endif %}
-                
-              {% endfor %}
-              
-              {% if dueCount < 1 %}
-                <p>There's nothing due this week.</p>
               {% endif %}
             </dd>
             <dt>Assigned</dt>
+            {# check if there are assignments assigned during event week, add them if so #}
             <dd>
-              {% set assignedCount = 0 %}
-              {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
+              {% if event.assignedToday|length %}
+                {{ event.assignedToday }}
+              {% else %}
+                {% set assignedCount = 0 %}
+
+                {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
+                  
+                  {% if (assignment.assignedDate|date('Y-m') == event.date|date('Y-m')) and (assignment.assignedDate|date('W') == event.date|date('W')) %}
+                    {% set assignedCount = assignedCount + 1 %}
+                  
+                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>
+                  {% endif %}
+                {% endfor %}
                 
-                {% if (assignment.assignedDate|date('Y-m') == event.date|date('Y-m')) and (assignment.assignedDate|date('W') == event.date|date('W')) %}
-                  {% set assignedCount = assignedCount + 1 %}
-                
-                  <p><a href="{{ assignment.url }}">{{ assignment.title }}</a></p>
+                {% if assignedCount < 1 %}
+                  There's nothing assigned this week.
                 {% endif %}
-                
-              {% endfor %}
-              
-              {% if assignedCount < 1 %}
-                <p>There's nothing assigned this week.</p>
               {% endif %}
             </dd>
             {% if event.slides|length %}
@@ -76,5 +88,5 @@
 
   {% endfor %}
   
-  <a href="{{ siteUrl }}/class" class="button small">Return to Class</a>
+  <a href="{{ craft.entries.section('courses').relatedTo(entry).one().url() }}" class="button small">Return to Course</a>
 {% endblock %}
