@@ -8,8 +8,8 @@
 		<nav role="navigation">
 			<ul class="group">
 				{% for block in header.navigationItems.all() %}
-					<li>
-						<a {% if block.itemUrl in craft.app.request.absoluteUrl %}class="active"{% endif %} href="{{ siteUrl ~ block.itemUrl }}">{{ block.itemTitle }}</a>
+					<li{% if block.itemUrl == craft.app.request.segments|first %} class="active"{% endif %}>
+						<a href="{{ siteUrl ~ block.itemUrl }}">{{ block.itemTitle }}</a>
 					</li>
 				{% endfor %}
 			</ul>
