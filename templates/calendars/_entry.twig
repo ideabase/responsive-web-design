@@ -41,12 +41,23 @@
               {% else %}
                 {% set dueCount = 0 %}
 
+                {# count number of assignments due on this event date #}
                 {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
-                  
+
                   {% if (assignment.dueDate|date('Y-m') == event.date|date('Y-m')) and (assignment.dueDate|date('W') == event.date|date('W'))  %}
+
                     {% set dueCount = dueCount + 1 %}
+
+                  {% endif %}
+                {% endfor %}
+
+                {# print the assignements due on this event date #}
+                {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
+
+                  {% if (assignment.dueDate|date('Y-m') == event.date|date('Y-m')) and (assignment.dueDate|date('W') == event.date|date('W'))  %}
                   
-                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>
+                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>{% if loop.index < dueCount %},{% endif %}
+                    
                   {% endif %}
                 {% endfor %}
                 
@@ -66,9 +77,19 @@
                 {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
                   
                   {% if (assignment.assignedDate|date('Y-m') == event.date|date('Y-m')) and (assignment.assignedDate|date('W') == event.date|date('W')) %}
+
                     {% set assignedCount = assignedCount + 1 %}
+
+                  {% endif %}
+                {% endfor %}
+
+                {# print the assignments assigned on this event date #}
+                {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
                   
-                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>
+                  {% if (assignment.assignedDate|date('Y-m') == event.date|date('Y-m')) and (assignment.assignedDate|date('W') == event.date|date('W')) %}
+                  
+                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>{% if loop.index < assignedCount %},{% endif %}
+
                   {% endif %}
                 {% endfor %}
                 

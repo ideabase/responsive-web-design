@@ -291,12 +291,12 @@
     },
     {
         "name": "craftcms/cms",
-        "version": "3.0.35",
-        "version_normalized": "3.0.35.0",
+        "version": "3.0.36",
+        "version_normalized": "3.0.36.0",
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/craftcms/cms/zipball/620afa6ed9d036ee1910480e8d01789d623a6ff7",
-            "reference": "620afa6ed9d036ee1910480e8d01789d623a6ff7",
+            "url": "https://api.github.com/repos/craftcms/cms/zipball/76b9d7b854a725771028d3bee928b56e6039325c",
+            "reference": "76b9d7b854a725771028d3bee928b56e6039325c",
             "shasum": ""
         },
         "require": {
@@ -346,7 +346,7 @@
             "ext-imagick": "Adds support for more image processing formats and options.",
             "ext-intl": "Adds rich internationalization support."
         },
-        "time": "2018-12-11T18:12:34+00:00",
+        "time": "2018-12-18T20:33:23+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -461,18 +461,18 @@
     },
     {
         "name": "craftcms/redactor",
-        "version": "2.1.6",
-        "version_normalized": "2.1.6.0",
+        "version": "2.1.7",
+        "version_normalized": "2.1.7.0",
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/craftcms/redactor/zipball/86699fb2e9be6c689b3f5da75145acacf9497938",
-            "reference": "86699fb2e9be6c689b3f5da75145acacf9497938",
+            "url": "https://api.github.com/repos/craftcms/redactor/zipball/9d2e579b358dd1e42ad34e208ca887d5c9530967",
+            "reference": "9d2e579b358dd1e42ad34e208ca887d5c9530967",
             "shasum": ""
         },
         "require": {
             "craftcms/cms": "^3.0.0-RC15"
         },
-        "time": "2018-08-21T07:54:14+00:00",
+        "time": "2018-12-17T08:09:54+00:00",
         "type": "craft-plugin",
         "extra": {
             "name": "Redactor",
@@ -2040,29 +2040,24 @@
     },
     {
         "name": "twig/twig",
-        "version": "v2.5.0",
-        "version_normalized": "2.5.0.0",
+        "version": "v2.6.0",
+        "version_normalized": "2.6.0.0",
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/6a5f676b77a90823c2d4eaf76137b771adf31323",
-            "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/a11dd39f5b6589e14f0ff3b36675d06047c589b1",
+            "reference": "a11dd39f5b6589e14f0ff3b36675d06047c589b1",
             "shasum": ""
         },
         "require": {
             "php": "^7.0",
             "symfony/polyfill-ctype": "^1.8",
-            "symfony/polyfill-mbstring": "~1.0"
+            "symfony/polyfill-mbstring": "^1.3"
         },
-        "require-dev": {
-            "psr/container": "^1.0",
-            "symfony/debug": "^2.7",
-            "symfony/phpunit-bridge": "^3.3"
-        },
-        "time": "2018-07-13T07:18:09+00:00",
+        "time": "2018-12-16T10:36:48+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.5-dev"
+                "dev-master": "2.6-dev"
             }
         },
         "installation-source": "dist",
@@ -2074,7 +2069,6 @@
                 "Twig\\": "src/"
             }
         },
-        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "BSD-3-Clause"
         ],

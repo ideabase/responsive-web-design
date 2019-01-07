@@ -9,7 +9,7 @@
         {{ block.body }}
 
       {% case 'button' %}
-        <a href="{{ block.buttonUrl }}" class="small button">{{ block.text }}</a>
+        <a href="{{ include(template_from_string(block.buttonUrl)|raw) }}" class="small button">{{ block.text }}</a>
 
       {% case 'hr' %}
         <hr>
