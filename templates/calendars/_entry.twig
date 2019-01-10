@@ -40,11 +40,12 @@
                 {{ event.dueToday }}
               {% else %}
                 {% set dueCount = 0 %}
+                {% set count = 0 %}
 
                 {# count number of assignments due on this event date #}
                 {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
 
-                  {% if (assignment.dueDate|date('Y-m') == event.date|date('Y-m')) and (assignment.dueDate|date('W') == event.date|date('W'))  %}
+                  {% if assignment.dueDate|date('W') == event.date|date('W')  %}
 
                     {% set dueCount = dueCount + 1 %}
 
@@ -54,9 +55,10 @@
                 {# print the assignements due on this event date #}
                 {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
 
-                  {% if (assignment.dueDate|date('Y-m') == event.date|date('Y-m')) and (assignment.dueDate|date('W') == event.date|date('W'))  %}
+                  {% if assignment.dueDate|date('W') == event.date|date('W')  %}
                   
-                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>{% if loop.index < dueCount %},{% endif %}
+                    {% set count = count + 1 %}
+                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>{% if count < dueCount %},{% endif %}
                     
                   {% endif %}
                 {% endfor %}
@@ -66,6 +68,7 @@
                 {% endif %}
               {% endif %}
             </dd>
+
             <dt>Assigned</dt>
             {# check if there are assignments assigned during event week, add them if so #}
             <dd>
@@ -73,10 +76,12 @@
                 {{ event.assignedToday }}
               {% else %}
                 {% set assignedCount = 0 %}
+                {% set count = 0 %}
 
+                {# count number of assignments assigned on this event date #}
                 {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
                   
-                  {% if (assignment.assignedDate|date('Y-m') == event.date|date('Y-m')) and (assignment.assignedDate|date('W') == event.date|date('W')) %}
+                  {% if assignment.assignedDate|date('W') == event.date|date('W') %}
 
                     {% set assignedCount = assignedCount + 1 %}
 
@@ -86,9 +91,10 @@
                 {# print the assignments assigned on this event date #}
                 {% for assignment in craft.entries.section('assignments').relatedTo(craft.categories.group('assignmentTypes').relatedTo(craft.entries.section('assignmentLists').relatedTo(craft.entries.section('courses').relatedTo(entry)))).all() %}
                   
-                  {% if (assignment.assignedDate|date('Y-m') == event.date|date('Y-m')) and (assignment.assignedDate|date('W') == event.date|date('W')) %}
-                  
-                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>{% if loop.index < assignedCount %},{% endif %}
+                  {% if assignment.assignedDate|date('W') == event.date|date('W') %}
+
+                    {% set count = count + 1 %}
+                    <a href="{{ assignment.url }}">{{ assignment.title }}</a>{% if count < assignedCount %},{% endif %}
 
                   {% endif %}
                 {% endfor %}
@@ -98,6 +104,7 @@
                 {% endif %}
               {% endif %}
             </dd>
+
             {% if event.slides|length %}
               <dt>Slides from Class</dt>
               <dd><a href="{{ event.slides.one().url }}">View Slides From Class</a></dd>

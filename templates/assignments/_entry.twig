@@ -20,6 +20,9 @@
             <img src="{{ block.image.one().url }}" alt="{{ block.altText }}">
           </a>
         </figure>
+
+      {% case 'embed' %}
+        {{ block.code|raw }}
     {% endswitch %}
 
   {% endfor %}
