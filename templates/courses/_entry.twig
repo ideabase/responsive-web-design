@@ -80,7 +80,7 @@
       <dt>Day/Time:</dt>
       <dd>{{ entry.dayTime }}</dd>
       <dt>Location:</dt>
-      <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ entry.location.one().address|url_encode }}">{{ entry.location.one().title }}</a>{% if entry.location.one().room|length %}, Room {{ entry.location.one().room }}{% endif %}</dd>
+      <dd>{% if entry.location.one().locationUrl|length %}<a href="{{ entry.location.one().locationUrl }}">{{ entry.location.one().title }}</a>{% else %}{{ entry.location.one().title }}{% endif %}{% if entry.location.one().room|length %}, Room {{ entry.location.one().room }}{% endif %}</dd>
     </dl>
   </section>
   <section class="about-course">

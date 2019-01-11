@@ -3,7 +3,7 @@
 {% set course = entry.course.one() %}
 
 {% block content %}
-<h1>Syllabus - {{ entry.title }}</h1>
+<h1>{{ entry.title }}</h1>
 <h2>{{ course.courseNumber }}</h2>
 
 <dl class="detail-listing detail-listing--syllabus group">
@@ -40,7 +40,7 @@
     <dt>Day/Time:</dt>
     <dd>{{ course.dayTime }}</dd>
     <dt>Location:</dt>
-    <dd><a href="{{ 'https://www.google.com/maps/search/?api=1&query=' ~ course.location.one().address|url_encode }}">{{ course.location.one().title }}</a>{% if course.location.one().room|length %}, Room {{ course.location.one().room }}{% endif %}</dd>
+    <dd>{% if course.location.one().locationUrl|length %}<a href="{{ course.location.one().locationUrl }}">{{ course.location.one().title }}</a>{% else %}{{ course.location.one().title }}{% endif %}{% if course.location.one().room|length %}, Room {{ course.location.one().room }}{% endif %}</dd>
   </div>
 </dl>
 
