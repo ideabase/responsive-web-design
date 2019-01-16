@@ -121,6 +121,10 @@ table tr td:first-child {
 	width: 80%;
 }
 
+.table-container+* {
+	clear: both;
+}
+
 ol {
 	margin-bottom: 2em;
 }
@@ -130,8 +134,9 @@ main ul li {
 	margin-left: 0;
 	padding-left: 1em;
 	padding-left: 1em;
-    text-indent: -1em;
-    font-size: 1.05rem;
+	text-indent: -1em;
+	font-size: 1.05rem;
+	break-inside: avoid-column;
 }
 
 main ul li::before {
@@ -1170,7 +1175,7 @@ nav ul {
 	/*margin-bottom: .5em;*/
 	width: 100%;
 	flex-wrap: wrap;
-
+	justify-content: center;
 }
 
 nav ul li {
