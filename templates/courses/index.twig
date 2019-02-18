@@ -1,3 +1,7 @@
+{% if craft.entries.section('courses').count() == 1 %}
+  {% redirect craft.entries.section('courses').one().url %}
+{% endif %}
+
 {% extends '_layout_wide' %}
 
 {% block content %}

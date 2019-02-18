@@ -10,7 +10,7 @@
     {% for event in craft.entries.section('calendarEvents').relatedTo(calendarSection).orderBy('date').all() %}
 
       <div class="class-entry group">
-        {# toggle the current week's info open #}
+        {# toggle open the current week's info #}
         <input class="toggle"{% if event.date <= date() and date() < event.date|date_modify('+1 week') %} checked{% endif %} id="toggle-{{ event.date|date('c') }}" type="checkbox" name="toggle" />
         <label for="toggle-{{ event.date|date('c') }}">
 
