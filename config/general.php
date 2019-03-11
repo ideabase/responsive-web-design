@@ -11,6 +11,8 @@ return [
         'omitScriptNameInUrls' => true,
         'cpTrigger' => 'admin',
         'securityKey' => getenv('SECURITY_KEY'),
+        'maxUploadFileSize' => 104857600,
+        'extraAllowedFileExtensions' => 'ai, eps, ps',
     ],
 
     // Dev environment settings
