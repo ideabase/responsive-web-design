@@ -12,7 +12,7 @@ return [
         'cpTrigger' => 'admin',
         'securityKey' => getenv('SECURITY_KEY'),
         'maxUploadFileSize' => 104857600,
-        'extraAllowedFileExtensions' => 'ai, eps, ps',
+        'extraAllowedFileExtensions' => 'ai, eps, psd, ps',
     ],
 
     // Dev environment settings

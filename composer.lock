@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7358a63a616fc47429f0b9f246626cd",
+    "content-hash": "f9672629f52b77be707a539c0b98d3ef",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -282,11 +282,11 @@
         },
         {
             "name": "craftcms/cms",
-            "version": "3.1.17.1",
+            "version": "3.1.17.2",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/cms/zipball/fcfa3889b95955bbfe38c2598e95aa154523c795",
-                "reference": "fcfa3889b95955bbfe38c2598e95aa154523c795",
+                "url": "https://api.github.com/repos/craftcms/cms/zipball/600ae6aaab1b8b686a3e6eca4cb27ddf74289052",
+                "reference": "600ae6aaab1b8b686a3e6eca4cb27ddf74289052",
                 "shasum": ""
             },
             "require": {
@@ -315,7 +315,7 @@
                 "seld/cli-prompt": "^1.0.3",
                 "symfony/yaml": "^3.2|^4.0",
                 "true/punycode": "^2.1.0",
-                "twig/twig": "^2.5.0",
+                "twig/twig": "~2.6.2",
                 "yii2tech/ar-softdelete": "^1.0.2",
                 "yiisoft/yii2": "~2.0.16.1",
                 "yiisoft/yii2-debug": "^2.0.10",
@@ -362,7 +362,7 @@
                 "docs": "https://docs.craftcms.com/v3/",
                 "rss": "https://github.com/craftcms/cms/releases.atom"
             },
-            "time": "2019-03-09T01:51:41+00:00"
+            "time": "2019-03-12T15:10:31+00:00"
         },
         {
             "name": "craftcms/oauth2-craftid",
