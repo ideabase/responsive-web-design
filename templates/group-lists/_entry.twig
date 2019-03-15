@@ -6,7 +6,7 @@
 
   <ul>
 
-    {% for group in craft.entries.section('groups').relatedTo(entry).orderBy('title asc').all() %}
+    {% for group in craft.entries.section('groups').relatedTo(entry).orderBy('postDate asc').all() %}
 
       <li><a href="{{ group.url }}">{{ group.title }}</a></li>
 
