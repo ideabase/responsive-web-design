@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>{{ entry.title }}</h1>
-  <a href="{{ entry.course.one().url }}" class="button small">Return to Class</a>
+  <a href="{{ entry.course.one().url }}" class="button small">Return to Course</a>
 
   {% for assignmentType in craft.categories.group('assignmentTypes').relatedTo(entry).orderBy('elements.dateCreated').all() %}
 

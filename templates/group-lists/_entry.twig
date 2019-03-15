@@ -1,0 +1,17 @@
+{% extends '_layout_wide' %}
+
+{% block content %}
+  <h1>{{ entry.title }}</h1>
+  <a href="{{ entry.course.one().url }}" class="button small">Return to Course</a>
+
+  <ul>
+
+    {% for group in craft.entries.section('groups').relatedTo(entry).orderBy('title asc').all() %}
+
+      <li><a href="{{ group.url }}">{{ group.title }}</a></li>
+
+    {% endfor %}
+
+  </ul>
+  
+{% endblock %}

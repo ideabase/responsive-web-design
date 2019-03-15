@@ -4,7 +4,7 @@
 {% set syllabus = craft.entries.section('syllabi').relatedTo(entry).one() %}
 {% set calendar = craft.entries.section('calendars').relatedTo(entry).one() %}
 {% set assignments = craft.entries.section('assignmentLists').relatedTo(entry).one() %}
-{% set teams = craft.entries.section('teams').relatedTo(entry) %}
+{% set groups = craft.entries.section('groupLists').relatedTo(entry).one() %}
 
 {% block content %}
 <h1>{{ entry.title }}</h1>
@@ -24,9 +24,9 @@
         <dt class="gallery-item__icon assignments"><span class="gallery-item__icon__name">Assignments</span></dt>
         <dd class="gallery-item__description">See a detailed list of assignments and points.</dd>
       </a>
-      <a href="{% if teams|length %}{{ teams.url }}{% endif %}" class="gallery-item carousel-cell">
-        <dt class="gallery-item__icon groups"><span class="gallery-item__icon__name">Teams</span></dt>
-        <dd class="gallery-item__description">See more about your team and semester-long project.</dd>
+      <a href="{% if groups|length %}{{ groups.url }}{% endif %}" class="gallery-item carousel-cell">
+        <dt class="gallery-item__icon groups"><span class="gallery-item__icon__name">Groups</span></dt>
+        <dd class="gallery-item__description">See more about your group and semester-long project.</dd>
       </a>
     </dl>
   </div>

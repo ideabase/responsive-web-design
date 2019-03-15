@@ -21,6 +21,9 @@
           </a>
         </figure>
 
+      {% case 'assetLink' %}
+        <a href="{{ block.asset.one().url }}">{{ block.linkText }}</a>
+
       {% case 'embed' %}
         {{ block.code|raw }}
     {% endswitch %}

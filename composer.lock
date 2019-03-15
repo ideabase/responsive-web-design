@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9672629f52b77be707a539c0b98d3ef",
+    "content-hash": "89d5720d3303a2a8c81328de61dcc152",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -282,11 +282,11 @@
         },
         {
             "name": "craftcms/cms",
-            "version": "3.1.17.2",
+            "version": "3.1.18",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/cms/zipball/600ae6aaab1b8b686a3e6eca4cb27ddf74289052",
-                "reference": "600ae6aaab1b8b686a3e6eca4cb27ddf74289052",
+                "url": "https://api.github.com/repos/craftcms/cms/zipball/93f27e19df0aebaa151094d525a365aa14139414",
+                "reference": "93f27e19df0aebaa151094d525a365aa14139414",
                 "shasum": ""
             },
             "require": {
@@ -315,7 +315,7 @@
                 "seld/cli-prompt": "^1.0.3",
                 "symfony/yaml": "^3.2|^4.0",
                 "true/punycode": "^2.1.0",
-                "twig/twig": "~2.6.2",
+                "twig/twig": "^2.7.2",
                 "yii2tech/ar-softdelete": "^1.0.2",
                 "yiisoft/yii2": "~2.0.16.1",
                 "yiisoft/yii2-debug": "^2.0.10",
@@ -362,7 +362,7 @@
                 "docs": "https://docs.craftcms.com/v3/",
                 "rss": "https://github.com/craftcms/cms/releases.atom"
             },
-            "time": "2019-03-12T15:10:31+00:00"
+            "time": "2019-03-14T18:15:54+00:00"
         },
         {
             "name": "craftcms/oauth2-craftid",
@@ -2161,11 +2161,11 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.6.2",
+            "version": "v2.7.2",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
-                "reference": "7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/70c59531da43afe598c66135e39cac39475a2f51",
+                "reference": "70c59531da43afe598c66135e39cac39475a2f51",
                 "shasum": ""
             },
             "require": {
@@ -2176,7 +2176,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -2213,7 +2213,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-01-14T15:00:48+00:00"
+            "time": "2019-03-12T18:48:26+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

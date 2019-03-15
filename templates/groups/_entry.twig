@@ -1,0 +1,35 @@
+{% extends '_layout_wide' %}
+
+{% block content %}
+  <h1>{{ entry.title }}</h1>
+  <a href="{{ craft.entries.section('groupLists').relatedTo(entry).one().url }}" class="button small">Return to Groups</a>
+
+  {% for block in entry.groupBody.all() %}
+
+    {% switch block.type %}
+      {% case 'body' %}
+        {{ block.body }}
+
+      {% case 'button' %}
+        <a href="{{ include(template_from_string(block.buttonUrl)|raw) }}" class="small button">{{ block.text }}</a>
+
+      {% case 'hr' %}
+        <hr>
+
+      {% case 'image' %}
+        <figure class="figure">
+          <a href="{{ block.image.one().url }}">
+            <img src="{{ block.image.one().url }}" alt="{{ block.altText }}">
+          </a>
+        </figure>
+
+      {% case 'assetLink' %}
+        <a href="{{ block.asset.one().url }}">{{ block.linkText }}</a>
+
+      {% case 'embed' %}
+        {{ block.code|raw }}
+    {% endswitch %}
+
+  {% endfor %}
+
+{% endblock %}
