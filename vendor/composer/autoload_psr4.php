@@ -19,7 +19,6 @@ return array(
     'yii\\queue\\' => array($vendorDir . '/yiisoft/yii2-queue/src'),
     'yii\\debug\\' => array($vendorDir . '/yiisoft/yii2-debug/src'),
     'yii\\composer\\' => array($vendorDir . '/yiisoft/yii2-composer'),
-    'yii\\bootstrap\\' => array($vendorDir . '/yiisoft/yii2-bootstrap/src'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
     'yii2tech\\ar\\softdelete\\' => array($vendorDir . '/yii2tech/ar-softdelete/src'),
     'modules\\' => array($baseDir . '/modules'),
