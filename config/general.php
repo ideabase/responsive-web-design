@@ -17,7 +17,7 @@ return [
 
     // Dev environment settings
     'dev' => [
-        'siteUrl' => 'http://rwdkent.local/',
+        'siteUrl' => 'http://rwd.local/',
         'devMode' => true,
     ],
 

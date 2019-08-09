@@ -583,10 +583,10 @@ class Fields extends Component
         }
 
         if (is_string($context)) {
-            return ArrayHelper::filterByValue($this->_fields, 'context', $context, true);
+            return ArrayHelper::where($this->_fields, 'context', $context, true);
         }
 
-        return ArrayHelper::filterByValue($this->_fields, function(FieldInterface $field) use ($context) {
+        return ArrayHelper::where($this->_fields, function(FieldInterface $field) use ($context) {
             /** @var Field $field */
             return in_array($field->context, $context, true);
         });
@@ -599,7 +599,7 @@ class Fields extends Component
      */
     public function getFieldsWithContent(): array
     {
-        return ArrayHelper::filterByValue($this->getAllFields(), function(FieldInterface $field) {
+        return ArrayHelper::where($this->getAllFields(), function(FieldInterface $field) {
             return $field::hasContentColumn();
         });
     }
@@ -667,7 +667,7 @@ class Fields extends Component
      */
     public function getFieldsByGroupId(int $groupId): array
     {
-        return ArrayHelper::filterByValue($this->getAllFields(false), 'groupId', $groupId);
+        return ArrayHelper::where($this->getAllFields(false), 'groupId', $groupId);
     }
 
     /**
@@ -685,6 +685,7 @@ class Fields extends Component
                 'fl.type' => $elementType,
                 'fl.dateDeleted' => null,
             ])
+            ->groupBy(['fields.id'])
             ->all();
 
         $fields = [];
@@ -709,7 +710,7 @@ class Fields extends Component
             'name' => $field->name,
             'handle' => $field->handle,
             'instructions' => $field->instructions,
-            'searchable' => $field->searchable,
+            'searchable' => (bool)$field->searchable,
             'translationMethod' => $field->translationMethod,
             'translationKeyFormat' => $field->translationKeyFormat,
             'type' => get_class($field),
@@ -1039,6 +1040,21 @@ class Fields extends Component
     }
 
     /**
+     * Returns the field IDs for a given layout ID.
+     *
+     * @param int $layoutId The field layout ID
+     * @return int[]
+     */
+    public function getFieldIdsByLayoutId(int $layoutId): array
+    {
+        return (new Query())
+            ->select(['fieldId'])
+            ->from([Table::FIELDLAYOUTFIELDS])
+            ->where(['layoutId' => $layoutId])
+            ->column();
+    }
+
+    /**
      * Returns the field IDs grouped by layout IDs, for a given set of layout IDs.
      *
      * @param int[] $layoutIds The field layout IDs
@@ -1047,15 +1063,14 @@ class Fields extends Component
     public function getFieldIdsByLayoutIds(array $layoutIds): array
     {
         $results = (new Query())
-            ->select(['flf.layoutId', 'fields.id'])
-            ->from(['{{%fields}} fields'])
-            ->innerJoin('{{%fieldlayoutfields}} flf', '[[flf.fieldId]] = [[fields.id]]')
-            ->where(['flf.layoutId' => $layoutIds])
+            ->select(['layoutId', 'fieldId'])
+            ->from([Table::FIELDLAYOUTFIELDS])
+            ->where(['layoutId' => $layoutIds])
             ->all();
 
         $fieldIdsByLayoutId = [];
         foreach ($results as $result) {
-            $fieldIdsByLayoutId[$result['layoutId']][] = $result['id'];
+            $fieldIdsByLayoutId[$result['layoutId']][] = $result['fieldId'];
         }
 
         return $fieldIdsByLayoutId;
@@ -1393,7 +1408,7 @@ class Fields extends Component
 
         $info = Craft::$app->getInfo();
         $info->fieldVersion = StringHelper::randomString(12);
-        Craft::$app->saveInfo($info);
+        Craft::$app->saveInfoAfterRequest();
     }
 
     /**
@@ -1595,7 +1610,7 @@ class Fields extends Component
             ->orderBy(['fields.name' => SORT_ASC, 'fields.handle' => SORT_ASC]);
 
         // todo: remove schema version condition after next beakpoint
-        $schemaVersion = Craft::$app->getProjectConfig()->get('system.schemaVersion');
+        $schemaVersion = Craft::$app->getInstalledSchemaVersion();
         if (version_compare($schemaVersion, '3.1.0', '>=')) {
             $query->addSelect(['fields.searchable']);
         }
@@ -1619,7 +1634,7 @@ class Fields extends Component
             ->from([Table::FIELDLAYOUTS]);
 
         // todo: remove schema version condition after next beakpoint
-        $schemaVersion = Craft::$app->getProjectConfig()->get('system.schemaVersion');
+        $schemaVersion = Craft::$app->getInstalledSchemaVersion();
         if (version_compare($schemaVersion, '3.1.0', '>=')) {
             $query->where(['dateDeleted' => null]);
         }

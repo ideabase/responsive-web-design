@@ -11,6 +11,7 @@ use Craft;
 use craft\base\Plugin;
 use craft\db\Query;
 use craft\db\Table;
+use craft\elements\User;
 use craft\errors\OperationAbortedException;
 use craft\events\ConfigEvent;
 use craft\events\RebuildConfigEvent;
@@ -168,6 +169,11 @@ class ProjectConfig extends Component
     public $muteEvents = false;
 
     /**
+     * @var bool Whether project config should force updates on entries that aren't new or being removed.
+     */
+    public $forceUpdate = false;
+
+    /**
      * @var array Current config as stored in database.
      */
     private $_storedConfig;
@@ -221,12 +227,6 @@ class ProjectConfig extends Component
     private $_waitingToUpdateParsedConfigTimes = false;
 
     /**
-     * @var bool Whether we’re listening for the request end, to update the modified config data.
-     * @see saveModifiedConfigData()
-     */
-    private $_waitingToSaveModifiedConfigData = false;
-
-    /**
      * @var bool Whether project.yaml changes are currently being applied.
      * @see applyYamlChanges()
      * @see getIsApplyingYamlChanges()
@@ -264,7 +264,7 @@ class ProjectConfig extends Component
      */
     public function init()
     {
-        $this->saveDataAfterRequest();
+        Craft::$app->on(Application::EVENT_AFTER_REQUEST, [$this, 'saveModifiedConfigData'], null, false);
 
         // If we're not using the project config file, load the stored config to emulate config files.
         // This is needed so we can make comparisons between the existing config and the modified config, as we're firing events.
@@ -296,32 +296,6 @@ class ProjectConfig extends Component
         $this->_changesBeingApplied = null;
 
         $this->init();
-    }
-
-    /**
-     * Set up an event handler to save modified data after request is over. This is called automatically when service is initialized.
-     *
-     * @return void
-     */
-    public function saveDataAfterRequest()
-    {
-        if (!$this->_waitingToSaveModifiedConfigData) {
-            Craft::$app->on(Application::EVENT_AFTER_REQUEST, [$this, 'saveModifiedConfigData']);
-            $this->_waitingToSaveModifiedConfigData = true;
-        }
-    }
-
-    /**
-     * Disable the event handler that would save modified data after request is over.
-     *
-     * @return void
-     */
-    public function preventSavingDataAfterRequest()
-    {
-        if ($this->_waitingToSaveModifiedConfigData) {
-            Craft::$app->off(Application::EVENT_AFTER_REQUEST, [$this, 'saveModifiedConfigData']);
-            $this->_waitingToSaveModifiedConfigData = false;
-        }
     }
 
     /**
@@ -446,11 +420,21 @@ class ProjectConfig extends Component
      */
     public function applyYamlChanges()
     {
+        $mutex = Craft::$app->getMutex();
+        $lockName = 'project-config-sync';
+
+        if (!$mutex->acquire($lockName, 15)) {
+            throw new Exception('Could not acquire a lock for the syncing project config.');
+        }
+
         $this->_applyingYamlChanges = true;
+        Craft::$app->getCache()->delete(self::CACHE_KEY);
 
         $changes = $this->_getPendingChanges();
 
         $this->_applyChanges($changes);
+
+        $mutex->release($lockName);
     }
 
     /**
@@ -560,7 +544,8 @@ class ProjectConfig extends Component
             if (!$this->muteEvents) {
                 $this->trigger(self::EVENT_ADD_ITEM, $event);
             }
-        } else if ($triggerUpdate ||
+        } else if ($this->forceUpdate ||
+            $triggerUpdate ||
             Json::encode($oldValue) !== Json::encode($newValue)
         ) {
             // Fire an 'updateItem' event
@@ -630,30 +615,32 @@ class ProjectConfig extends Component
             }
         }
 
-        if (($this->_updateConfigMap && $this->_useConfigFile()) || $this->_updateConfig) {
-            $previousConfig = $this->_getStoredConfig();
-            $value = ProjectConfigHelper::cleanupConfig($previousConfig);
-            ksort($value);
-            $this->_storeYamlHistory($value);
-
-            $info = Craft::$app->getInfo();
-
-            if ($this->_updateConfigMap && $this->_useConfigFile()) {
-                $configMap = $this->_generateConfigMap();
-
-                foreach ($configMap as &$filePath) {
-                    $filePath = Craft::alias($filePath);
-                }
-
-                $info->configMap = Json::encode($configMap);
-            }
-
-            if ($this->_updateConfig) {
-                $info->config = serialize($this->_getConfigurationFromYaml());
-            }
-
-            Craft::$app->saveInfo($info);
+        if (!$this->_updateConfig && !($this->_updateConfigMap && $this->_useConfigFile())) {
+            return;
         }
+
+        $previousConfig = $this->_getStoredConfig();
+        $value = ProjectConfigHelper::cleanupConfig($previousConfig);
+        ksort($value);
+        $this->_storeYamlHistory($value);
+
+        $info = Craft::$app->getInfo();
+
+        if ($this->_updateConfigMap && $this->_useConfigFile()) {
+            $configMap = $this->_generateConfigMap();
+
+            foreach ($configMap as &$filePath) {
+                $filePath = Craft::alias($filePath);
+            }
+
+            $info->configMap = Json::encode($configMap);
+        }
+
+        if ($this->_updateConfig) {
+            $info->config = Json::encode($this->_getConfigurationFromYaml());
+        }
+
+        Craft::$app->saveInfoAfterRequest();
     }
 
     /**
@@ -686,9 +673,12 @@ class ProjectConfig extends Component
      * The schemas must match exactly to avoid unpredictable behavior that can occur when running migrations
      * and applying project config changes at the same time.
      *
-     * @return bool
+     * @param array $issues Passed by reference and populated with issues on error in
+     *                      the following format: `[$pluginName, $existingSchema, $incomingSchema]`
+     *
+     * @return bool|array
      */
-    public function getAreConfigSchemaVersionsCompatible(): bool
+    public function getAreConfigSchemaVersionsCompatible(&$issues = [])
     {
         // TODO remove after next breakpoint
         if (version_compare(Craft::$app->getInfo()->version, '3.1', '<')) {
@@ -700,7 +690,11 @@ class ProjectConfig extends Component
 
         // Compare existing Craft schema version with the one that is being applied.
         if (!version_compare($existingSchema, $incomingSchema, '=')) {
-            return false;
+            $issues[] = [
+                'cause' => 'Craft CMS',
+                'existing' => $existingSchema,
+                'incoming' => $incomingSchema
+            ];
         }
 
         $plugins = Craft::$app->getPlugins()->getAllPlugins();
@@ -712,11 +706,15 @@ class ProjectConfig extends Component
 
             // Compare existing plugin schema version with the one that is being applied.
             if ($incomingSchema && !version_compare($existingSchema, $incomingSchema, '=')) {
-                return false;
+                $issues[] = [
+                    'cause' => $plugin->name,
+                    'existing' => $existingSchema,
+                    'incoming' => $incomingSchema
+                ];
             }
         }
 
-        return true;
+        return empty($issues);
     }
 
     // Config Change Event Registration
@@ -893,7 +891,13 @@ class ProjectConfig extends Component
         $this->trigger(self::EVENT_REBUILD, $event);
 
         // Merge the new data over the existing one.
-        $configData = array_replace_recursive($currentConfig, $event->config);
+        $configData = array_replace_recursive([
+            'system' => $currentConfig['system'],
+            'routes' => $currentConfig['routes'] ?? [],
+            'plugins' => $currentConfig['plugins'] ?? [],
+            'users' => $currentConfig['users'] ?? [],
+            'email' => $currentConfig['email'] ?? [],
+        ], $event->config);
 
         $this->muteEvents = true;
 
@@ -944,7 +948,16 @@ class ProjectConfig extends Component
         $defers = -count($this->_deferredEvents);
         while (!empty($this->_deferredEvents)) {
             if ($defers > $this->maxDefers) {
-                throw new OperationAbortedException('Maximum number of deferred events reached.');
+                $paths = [];
+
+                // Grab a list of all deferred event paths
+                foreach ($this->_deferredEvents as list($deferredEvent)) {
+                    // Save us the trouble of filtering out duplicates later
+                    $paths[$deferredEvent->path] = true;
+                }
+
+                $message = "The following config paths could not be processed successfully:\n" . implode("\n", array_keys($paths));
+                throw new OperationAbortedException($message);
             }
 
             /** @var ConfigEvent $event */
@@ -1058,7 +1071,7 @@ class ProjectConfig extends Component
         $configMap = Json::decode(Craft::$app->getInfo()->configMap) ?? [];
 
         foreach ($configMap as &$filePath) {
-            $filePath = Craft::getAlias($filePath);
+            $filePath = FileHelper::normalizePath(Craft::getAlias($filePath));
 
             // If any of the file doesn't exist, return a generated map and make sure we save it as request ends
             if (!file_exists($filePath)) {
@@ -1099,7 +1112,13 @@ class ProjectConfig extends Component
         }
 
         $info = Craft::$app->getInfo();
-        return $this->_storedConfig = $info->config ? unserialize($info->config, ['allowed_classes' => false]) : [];
+        if (!$info->config) {
+            return $this->_storedConfig = [];
+        }
+        if ($info->config[0] === '{') {
+            return $this->_storedConfig = Json::decode($info->config);
+        }
+        return $this->_storedConfig = unserialize($info->config, ['allowed_classes' => false]);
     }
 
     /**
@@ -1148,7 +1167,7 @@ class ProjectConfig extends Component
 
             if (!array_key_exists($key, $flatCurrent)) {
                 $newItems[] = $immediateParent;
-            } elseif ($flatCurrent[$key] !== $value) {
+            } elseif ($this->forceUpdate || $flatCurrent[$key] !== $value) {
                 $changedItems[] = $immediateParent;
             }
 
@@ -1410,6 +1429,7 @@ class ProjectConfig extends Component
                 'name',
             ])
             ->from([Table::SITEGROUPS])
+            ->where(['dateDeleted' => null])
             ->pairs();
 
         foreach ($siteGroups as $uid => $name) {
@@ -1443,11 +1463,18 @@ class ProjectConfig extends Component
             ])
             ->from(['{{%sites}} sites'])
             ->innerJoin('{{%sitegroups}} siteGroups', '[[sites.groupId]] = [[siteGroups.id]]')
+            ->where(['sites.dateDeleted' => null])
+            ->andWhere(['siteGroups.dateDeleted' => null])
             ->all();
 
         foreach ($sites as $site) {
             $uid = $site['uid'];
             unset($site['uid'], $site['groupId']);
+
+            $site['sortOrder'] = (int)$site['sortOrder'];
+            $site['hasUrls'] = (bool)$site['hasUrls'];
+            $site['primary'] = (bool)$site['primary'];
+
             $data[$uid] = $site;
         }
 
@@ -1468,13 +1495,15 @@ class ProjectConfig extends Component
                 'sections.handle',
                 'sections.type',
                 'sections.enableVersioning',
-                'sections.propagateEntries',
+                'sections.propagationMethod',
                 'sections.uid',
                 'structures.uid AS structure',
                 'structures.maxLevels AS structureMaxLevels',
             ])
             ->from(['{{%sections}} sections'])
             ->leftJoin('{{%structures}} structures', '[[structures.id]] = [[sections.structureId]]')
+            ->where(['sections.dateDeleted' => null])
+            ->andWhere(['structures.dateDeleted' => null])
             ->all();
 
         $sectionData = [];
@@ -1483,7 +1512,7 @@ class ProjectConfig extends Component
             if (!empty($section['structure'])) {
                 $section['structure'] = [
                     'uid' => $section['structure'],
-                    'maxLevels' => $section['structureMaxLevels']
+                    'maxLevels' => (int)$section['structureMaxLevels'] ?: null,
                 ];
             } else {
                 unset($section['structure']);
@@ -1491,6 +1520,8 @@ class ProjectConfig extends Component
 
             $uid = $section['uid'];
             unset($section['id'], $section['structureMaxLevels'], $section['uid']);
+
+            $section['enableVersioning'] = (bool)$section['enableVersioning'];
 
             $sectionData[$uid] = $section;
             $sectionData[$uid]['entryTypes'] = [];
@@ -1509,12 +1540,18 @@ class ProjectConfig extends Component
             ->from(['{{%sections_sites}} sections_sites'])
             ->innerJoin('{{%sites}} sites', '[[sites.id]] = [[sections_sites.siteId]]')
             ->innerJoin('{{%sections}} sections', '[[sections.id]] = [[sections_sites.sectionId]]')
+            ->where(['sites.dateDeleted' => null])
+            ->andWhere(['sections.dateDeleted' => null])
             ->all();
 
         foreach ($sectionSiteRows as $sectionSiteRow) {
             $sectionUid = $sectionSiteRow['sectionUid'];
             $siteUid = $sectionSiteRow['siteUid'];
             unset($sectionSiteRow['sectionUid'], $sectionSiteRow['siteUid']);
+
+            $sectionSiteRow['hasUrls'] = (bool)$sectionSiteRow['hasUrls'];
+            $sectionSiteRow['enabledByDefault'] = (bool)$sectionSiteRow['enabledByDefault'];
+
             $sectionData[$sectionUid]['siteSettings'][$siteUid] = $sectionSiteRow;
         }
 
@@ -1532,24 +1569,27 @@ class ProjectConfig extends Component
             ])
             ->from(['{{%entrytypes}} as entrytypes'])
             ->innerJoin('{{%sections}} sections', '[[sections.id]] = [[entrytypes.sectionId]]')
+            ->where(['sections.dateDeleted' => null])
+            ->andWhere(['entrytypes.dateDeleted' => null])
             ->all();
 
-        $layoutIds = ArrayHelper::getColumn($entryTypeRows, 'fieldLayoutId');
+        $layoutIds = array_filter(ArrayHelper::getColumn($entryTypeRows, 'fieldLayoutId'));
         $fieldLayouts = $this->_generateFieldLayoutArray($layoutIds);
 
         foreach ($entryTypeRows as $entryType) {
-            if (empty($entryType['fieldLayoutId'])) {
-                continue;
+            $uid = ArrayHelper::remove($entryType, 'uid');
+            $sectionUid = ArrayHelper::remove($entryType, 'sectionUid');
+            $fieldLayoutId = ArrayHelper::remove($entryType, 'fieldLayoutId');
+
+            $entryType['hasTitleField'] = (bool)$entryType['hasTitleField'];
+            $entryType['sortOrder'] = (int)$entryType['sortOrder'];
+
+            if ($fieldLayoutId) {
+                $layout = array_merge($fieldLayouts[$fieldLayoutId]);
+                $layoutUid = ArrayHelper::remove($layout, 'uid');
+                $entryType['fieldLayouts'] = [$layoutUid => $layout];
             }
 
-            $layout = $fieldLayouts[$entryType['fieldLayoutId']];
-            $layoutUid = $layout['uid'];
-            $sectionUid = $entryType['sectionUid'];
-            $uid = $entryType['uid'];
-
-            unset($entryType['fieldLayoutId'], $entryType['sectionUid'], $entryType['uid'], $layout['uid']);
-
-            $entryType['fieldLayouts'] = [$layoutUid => $layout];
             $sectionData[$sectionUid]['entryTypes'][$uid] = $entryType;
         }
 
@@ -1616,6 +1656,9 @@ class ProjectConfig extends Component
             $fieldRow['settings'] = Json::decodeIfJson($fieldRow['settings']);
             $fieldInstance = $fieldService->getFieldById($fieldRow['id']);
             $fieldRow['contentColumnType'] = $fieldInstance->getContentColumnType();
+
+            $fieldRow['searchable'] = (bool)$fieldRow['searchable'];
+
             $fields[$fieldRow['uid']] = $fieldRow;
         }
 
@@ -1659,6 +1702,9 @@ class ProjectConfig extends Component
             unset($matrixBlockType['fieldId']);
 
             $layoutIds[] = $matrixBlockType['fieldLayoutId'];
+
+            $matrixBlockType['sortOrder'] = (int)$matrixBlockType['sortOrder'];
+
             $blockTypeData[$fieldId][$matrixBlockType['uid']] = $matrixBlockType;
         }
 
@@ -1701,6 +1747,9 @@ class ProjectConfig extends Component
 
             $fieldUid = $matrixSubfieldRow['uid'];
             unset($matrixSubfieldRow['uid'], $matrixSubfieldRow['id'], $matrixSubfieldRow['context']);
+
+            $matrixSubfieldRow['searchable'] = (bool)$matrixSubfieldRow['searchable'];
+
             $matrixSubFields[$blockTypeUid][$fieldUid] = $matrixSubfieldRow;
         }
 
@@ -1738,6 +1787,7 @@ class ProjectConfig extends Component
                 'volumes.uid',
             ])
             ->from(['{{%volumes}} volumes'])
+            ->where(['volumes.dateDeleted' => null])
             ->all();
 
         $layoutIds = [];
@@ -1761,6 +1811,10 @@ class ProjectConfig extends Component
 
             $uid = $volume['uid'];
             unset($volume['fieldLayoutId'], $volume['uid']);
+
+            $volume['hasUrls'] = (bool)$volume['hasUrls'];
+            $volume['sortOrder'] = (int)$volume['sortOrder'];
+
             $data[$uid] = $volume;
         }
 
@@ -1780,6 +1834,7 @@ class ProjectConfig extends Component
             ->select(['id'])
             ->from([Table::FIELDLAYOUTS])
             ->where(['type' => User::class])
+            ->andWhere(['dateDeleted' => null])
             ->scalar();
 
         if ($layoutId) {
@@ -1819,8 +1874,6 @@ class ProjectConfig extends Component
             ];
         }
 
-        $data['permissions'] = array_unique(array_values($permissions));
-
         return $data;
     }
 
@@ -1842,6 +1895,8 @@ class ProjectConfig extends Component
             ])
             ->from(['{{%categorygroups}} groups'])
             ->leftJoin('{{%structures}} structures', '[[structures.id]] = [[groups.structureId]]')
+            ->where(['groups.dateDeleted' => null])
+            ->andWhere(['structures.dateDeleted' => null])
             ->all();
 
         $groupData = [];
@@ -1858,7 +1913,7 @@ class ProjectConfig extends Component
             if (!empty($group['structure'])) {
                 $group['structure'] = [
                     'uid' => $group['structure'],
-                    'maxLevels' => $group['structureMaxLevels']
+                    'maxLevels' => (int)$group['structureMaxLevels'] ?: null,
                 ];
             } else {
                 unset($group['structure']);
@@ -1888,12 +1943,17 @@ class ProjectConfig extends Component
             ->from(['{{%categorygroups_sites}} groups_sites'])
             ->innerJoin('{{%sites}} sites', '[[sites.id]] = [[groups_sites.siteId]]')
             ->innerJoin('{{%categorygroups}} groups', '[[groups.id]] = [[groups_sites.groupId]]')
+            ->where(['groups.dateDeleted' => null])
+            ->andWhere(['sites.dateDeleted' => null])
             ->all();
 
         foreach ($groupSiteRows as $groupSiteRow) {
             $groupUid = $groupSiteRow['groupUid'];
             $siteUid = $groupSiteRow['siteUid'];
             unset($groupSiteRow['siteUid'], $groupSiteRow['groupUid']);
+
+            $groupSiteRow['hasUrls'] = (bool)$groupSiteRow['hasUrls'];
+
             $groupData[$groupUid]['siteSettings'][$siteUid] = $groupSiteRow;
         }
 
@@ -1915,6 +1975,7 @@ class ProjectConfig extends Component
                 'groups.fieldLayoutId',
             ])
             ->from(['{{%taggroups}} groups'])
+            ->where(['groups.dateDeleted' => null])
             ->all();
 
         $groupData = [];
@@ -2037,6 +2098,9 @@ class ProjectConfig extends Component
 
         foreach ($transformRows as &$row) {
             unset($row['uid']);
+            $row['width'] = (int)$row['width'] ?: null;
+            $row['height'] = (int)$row['height'] ?: null;
+            $row['quality'] = (int)$row['quality'] ?: null;
         }
 
         return $transformRows;
@@ -2085,6 +2149,7 @@ class ProjectConfig extends Component
             ->innerJoin('{{%fieldlayouts}} AS layouts', '[[layoutFields.layoutId]] = [[layouts.id]]')
             ->innerJoin('{{%fields}} AS fields', '[[layoutFields.fieldId]] = [[fields.id]]')
             ->where(['layouts.id' => $layoutIds])
+            ->andWhere(['layouts.dateDeleted' => null])
             ->orderBy(['tabs.sortOrder' => SORT_ASC, 'layoutFields.sortOrder' => SORT_ASC])
             ->all();
 
@@ -2095,14 +2160,14 @@ class ProjectConfig extends Component
                 $layout['tabs'][$fieldRow['tabUid']] =
                     [
                         'name' => $fieldRow['tabName'],
-                        'sortOrder' => $fieldRow['tabOrder'],
+                        'sortOrder' => (int)$fieldRow['tabOrder'],
                     ];
             }
 
             $tab = &$layout['tabs'][$fieldRow['tabUid']];
 
-            $field['required'] = $fieldRow['required'];
-            $field['sortOrder'] = $fieldRow['fieldOrder'];
+            $field['required'] = (bool)$fieldRow['required'];
+            $field['sortOrder'] = (int)$fieldRow['fieldOrder'];
 
             $tab['fields'][$fieldRow['fieldUid']] = $field;
         }

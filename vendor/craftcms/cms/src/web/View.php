@@ -17,6 +17,7 @@ use craft\helpers\Html as HtmlHelper;
 use craft\helpers\Json;
 use craft\helpers\Path;
 use craft\helpers\StringHelper;
+use craft\helpers\UrlHelper;
 use craft\web\twig\Environment;
 use craft\web\twig\Extension;
 use craft\web\twig\Template;
@@ -974,7 +975,7 @@ class View extends \yii\web\View
             if ($translation !== $message) {
                 $jsMessage = Json::encode($message);
                 $jsTranslation = Json::encode($translation);
-                $js .= ($js !== '' ? "\n" : '') . "Craft.translations[{$jsCategory}][{$jsMessage}] = {$jsTranslation};";
+                $js .= ($js !== '' ? PHP_EOL : '') . "Craft.translations[{$jsCategory}][{$jsMessage}] = {$jsTranslation};";
             }
         }
 
@@ -1034,13 +1035,18 @@ JS;
      * The template mode defines:
      * - the base path that templates should be looked for in
      * - the default template file extensions that should be automatically added when looking for templates
-     * - the "index" template filenames that sholud be checked when looking for templates
+     * - the "index" template filenames that should be checked when looking for templates
      *
      * @param string $templateMode Either 'site' or 'cp'
      * @throws Exception if $templateMode is invalid
      */
     public function setTemplateMode(string $templateMode)
     {
+        // Ignore if it's already set to that
+        if ($templateMode === $this->_templateMode) {
+            return;
+        }
+
         // Validate
         if (!in_array($templateMode, [
             self::TEMPLATE_MODE_CP,
@@ -1448,7 +1454,7 @@ JS;
      */
     protected function registerAssetFlashes()
     {
-        if (Craft::$app->getRequest()->getIsConsoleRequest()) {
+        if (!Craft::$app->getRequest()->getIsCpRequest()) {
             return;
         }
 
@@ -1665,6 +1671,7 @@ JS;
 
         /** @var Element $element */
         $element = $context['element'];
+        $label = $element->getUiLabel();
 
         if (!isset($context['context'])) {
             $context['context'] = 'index';
@@ -1715,10 +1722,15 @@ JS;
                 'data-label' => (string)$element,
                 'data-url' => $element->getUrl(),
                 'data-level' => $element->level,
+                'title' => $label . (Craft::$app->getIsMultiSite() ? ' – ' . $element->getSite()->name : ''),
             ]);
 
         if ($context['context'] === 'field') {
             $htmlAttributes['class'] .= ' removable';
+        }
+
+        if ($element->hasErrors()) {
+            $htmlAttributes['class'] .= ' error';
         }
 
         if ($element::hasStatuses()) {
@@ -1761,13 +1773,19 @@ JS;
 
         $html .= '<span class="title">';
 
-        $label = HtmlHelper::encode($element);
+        $encodedLabel = HtmlHelper::encode($label);
 
         if ($context['context'] === 'index' && !$element->trashed && ($cpEditUrl = $element->getCpEditUrl())) {
+            if ($element->getIsDraft()) {
+                $cpEditUrl = UrlHelper::urlWithParams($cpEditUrl, ['draftId' => $element->draftId]);
+            } else if ($element->getIsRevision()) {
+                $cpEditUrl = UrlHelper::urlWithParams($cpEditUrl, ['revisionId' => $element->revisionId]);
+            }
+
             $cpEditUrl = HtmlHelper::encode($cpEditUrl);
-            $html .= "<a href=\"{$cpEditUrl}\">{$label}</a>";
+            $html .= "<a href=\"{$cpEditUrl}\">{$encodedLabel}</a>";
         } else {
-            $html .= $label;
+            $html .= $encodedLabel;
         }
 
         $html .= '</span></div></div>';

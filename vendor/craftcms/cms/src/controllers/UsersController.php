@@ -13,6 +13,7 @@ use craft\base\Field;
 use craft\db\Query;
 use craft\db\Table;
 use craft\elements\Asset;
+use craft\elements\Entry;
 use craft\elements\User;
 use craft\errors\UploadFailedException;
 use craft\errors\UserLockedException;
@@ -90,14 +91,14 @@ class UsersController extends Controller
      * @inheritdoc
      */
     protected $allowAnonymous = [
-        'login',
-        'logout',
-        'get-remaining-session-time',
-        'send-password-reset-email',
-        'send-activation-email',
-        'save-user',
-        'set-password',
-        'verify-email'
+        'get-remaining-session-time' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE,
+        'login' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE,
+        'logout' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE,
+        'save-user' => self::ALLOW_ANONYMOUS_LIVE,
+        'send-activation-email' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE,
+        'send-password-reset-email' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE,
+        'set-password' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE,
+        'verify-email' => self::ALLOW_ANONYMOUS_LIVE | self::ALLOW_ANONYMOUS_OFFLINE,
     ];
 
     // Public Methods
@@ -131,7 +132,6 @@ class UsersController extends Controller
         }
 
         if (!Craft::$app->getRequest()->getIsPost()) {
-            $this->_enforceOfflineLoginPage();
             return null;
         }
 
@@ -177,11 +177,11 @@ class UsersController extends Controller
      * Logs a user in for impersonation. Requires you to be an administrator.
      *
      * @return Response|null
+     * @throws ForbiddenHttpException
      */
     public function actionImpersonate()
     {
         $this->requireLogin();
-        $this->requireAdmin(false);
         $this->requirePostRequest();
 
         $userSession = Craft::$app->getUser();
@@ -189,6 +189,13 @@ class UsersController extends Controller
         $request = Craft::$app->getRequest();
 
         $userId = $request->getBodyParam('userId');
+
+        // Make sure they're allowed to impersonate this user
+        $usersService = Craft::$app->getUsers();
+        $impersonatee = $usersService->getUserById($userId);
+        if (!$usersService->canImpersonate($userSession->getIdentity(), $impersonatee)) {
+            throw new ForbiddenHttpException('You do not have sufficient permissions to impersonate this user');
+        }
 
         // Save the original user ID to the session now so User::findIdentity()
         // knows not to worry if the user isn't active yet
@@ -246,7 +253,8 @@ class UsersController extends Controller
      */
     public function actionStartElevatedSession()
     {
-        $password = Craft::$app->getRequest()->getBodyParam('password');
+        $request = Craft::$app->getRequest();
+        $password = $request->getBodyParam('currentPassword') ?? $request->getBodyParam('password');
 
         try {
             $success = Craft::$app->getUser()->startElevatedSession($password);
@@ -697,7 +705,7 @@ class UsersController extends Controller
             }
 
             if (!$isCurrentUser) {
-                if ($userSession->getIsAdmin()) {
+                if (Craft::$app->getUsers()->canImpersonate($currentUser, $user)) {
                     $sessionActions[] = [
                         'action' => 'users/impersonate',
                         'label' => Craft::t('app', 'Login as {user}', ['user' => $user->getName()])
@@ -923,7 +931,7 @@ class UsersController extends Controller
         $request = Craft::$app->getRequest();
         $userSession = Craft::$app->getUser();
         $currentUser = $userSession->getIdentity();
-        $requireEmailVerification = Craft::$app->getProjectConfig()->get('users.requireEmailVerification');
+        $requireEmailVerification = Craft::$app->getProjectConfig()->get('users.requireEmailVerification') ?? true;
 
         // Get the user being edited
         // ---------------------------------------------------------------------
@@ -959,7 +967,8 @@ class UsersController extends Controller
                 $this->requirePermission('registerUsers');
             } else {
                 // Make sure public registration is allowed
-                if (!Craft::$app->getProjectConfig()->get('users.allowPublicRegistration')) {
+                $allowPublicRegistration = Craft::$app->getProjectConfig()->get('users.allowPublicRegistration') ?? false;
+                if (!$allowPublicRegistration) {
                     throw new ForbiddenHttpException('Public registration is not allowed');
                 }
 
@@ -1219,7 +1228,6 @@ class UsersController extends Controller
      */
     public function actionUploadUserPhoto()
     {
-        $this->requireCpRequest();
         $this->requireAcceptsJson();
         $this->requireLogin();
 
@@ -1246,12 +1254,8 @@ class UsersController extends Controller
             move_uploaded_file($file->tempName, $fileLocation);
             $users->saveUserPhoto($fileLocation, $user, $file->name);
 
-            $html = $this->getView()->renderTemplate('users/_photo', [
-                'user' => $user
-            ]);
-
             return $this->asJson([
-                'html' => $html,
+                'html' => $this->_renderPhotoTemplate($user),
             ]);
         } catch (\Throwable $exception) {
             /** @noinspection UnSafeIsSetOverArrayInspection - FP */
@@ -1279,7 +1283,6 @@ class UsersController extends Controller
      */
     public function actionDeleteUserPhoto(): Response
     {
-        $this->requireCpRequest();
         $this->requireAcceptsJson();
         $this->requireLogin();
 
@@ -1298,11 +1301,9 @@ class UsersController extends Controller
         $user->photoId = null;
         Craft::$app->getElements()->saveElement($user, false);
 
-        $html = $this->getView()->renderTemplate('users/_photo', [
-            'user' => $user
+        return $this->asJson([
+            'html' => $this->_renderPhotoTemplate($user),
         ]);
-
-        return $this->asJson(['html' => $html]);
     }
 
     /**
@@ -1443,9 +1444,11 @@ class UsersController extends Controller
 
         $summary = [];
 
-        $entryCount = (new Query())
-            ->from([Table::ENTRIES])
-            ->where(['authorId' => $userIds])
+        $entryCount = Entry::find()
+            ->authorId($userIds)
+            ->siteId('*')
+            ->unique()
+            ->anyStatus()
             ->count();
 
         if ($entryCount) {
@@ -1635,7 +1638,6 @@ class UsersController extends Controller
             'errorMessage' => $event->message,
         ]);
 
-        $this->_enforceOfflineLoginPage();
         return null;
     }
 
@@ -1675,27 +1677,6 @@ class UsersController extends Controller
         }
 
         return $this->redirectToPostedUrl($userSession->getIdentity(), $returnUrl);
-    }
-
-    /**
-     * Ensures that either the site is online or the user is specifically requesting the login path.
-     *
-     * @throws ServiceUnavailableHttpException
-     */
-    private function _enforceOfflineLoginPage()
-    {
-        if (!Craft::$app->getIsLive()) {
-            $request = Craft::$app->getRequest();
-            if ($request->getIsCpRequest()) {
-                $loginPath = 'login';
-            } else {
-                $loginPath = trim(Craft::$app->getConfig()->getGeneral()->getLoginPath(), '/');
-            }
-
-            if ($request->getPathInfo() !== $loginPath) {
-                throw new ServiceUnavailableHttpException();
-            }
-        }
     }
 
     /**
@@ -1758,13 +1739,13 @@ class UsersController extends Controller
             return false;
         }
 
-        $currentHashedPassword = $currentUser->password;
-
-        try {
-            $currentPassword = Craft::$app->getRequest()->getRequiredParam('password');
-        } catch (BadRequestHttpException $e) {
+        $request = Craft::$app->getRequest();
+        $currentPassword = $request->getParam('currentPassword') ?? $request->getParam('password');
+        if ($currentPassword === null) {
             return false;
         }
+
+        $currentHashedPassword = $currentUser->password;
 
         try {
             return Craft::$app->getSecurity()->validatePassword($currentPassword, $currentHashedPassword);
@@ -2063,5 +2044,25 @@ class UsersController extends Controller
         ]);
 
         return null;
+    }
+
+    /**
+     * Renders the user photo template.
+     *
+     * @param User $user
+     * @return string The rendered HTML
+     */
+    private function _renderPhotoTemplate(User $user): string
+    {
+        $view = $this->getView();
+        $templateMode = $view->getTemplateMode();
+        if ($templateMode === View::TEMPLATE_MODE_SITE && !$view->doesTemplateExist('users/_photo')) {
+            $view->setTemplateMode(View::TEMPLATE_MODE_CP);
+        }
+        $html = $view->renderTemplate('users/_photo', [
+            'user' => $user
+        ]);
+        $view->setTemplateMode($templateMode);
+        return $html;
     }
 }
