@@ -17,7 +17,7 @@ return [
 
     // Dev environment settings
     'dev' => [
-        'siteUrl' => 'http://rwd.local/',
+        'siteUrl' => 'http://rwd.web/',
         'devMode' => true,
     ],
 
